@@ -59,15 +59,11 @@ int main() {
         window.clear();
 
         for (auto & g : gameObjects) {
-            if (g->startTime <= win.gameClock.getElapsedTime() && win.gameClock.getElapsedTime() <= g->endTime) {
-                g->tick(win);
-            }
+            g->tryTick(win);
         }
 
         for (auto & g : gameObjects) {
-            if (g->startTime <= win.gameClock.getElapsedTime() && win.gameClock.getElapsedTime() <= g->endTime) {
-                g->draw(win);
-            }
+            g->tryDraw(win);
         }
 
         window.display();

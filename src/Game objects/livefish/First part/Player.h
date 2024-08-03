@@ -2,8 +2,8 @@
 // Created by livefish on 8/3/24.
 //
 
-#ifndef GAMEJAMPROG_PLAYER_H
-#define GAMEJAMPROG_PLAYER_H
+#ifndef LIVEFISH_GAMEJAMPROG_PLAYER_H
+#define LIVEFISH_GAMEJAMPROG_PLAYER_H
 
 #include "Game object.h"
 
@@ -39,6 +39,10 @@ namespace fish {
             win.win.draw(player);
         }
 
+        void onHide(Window & win) override {
+            win.win.setView(win.win.getDefaultView());
+        }
+
     public:
         sf::Texture bgTex;
         sf::Sprite player, bg;
@@ -46,4 +50,4 @@ namespace fish {
     };
 }
 
-#endif //GAMEJAMPROG_PLAYER_H
+#endif //LIVEFISH_GAMEJAMPROG_PLAYER_H
