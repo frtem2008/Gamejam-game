@@ -16,13 +16,17 @@ int main() {
     window.setPosition({878, 83});
     window.setFramerateLimit(60);
 
+    sf::Time startTime = sf::seconds(20);
+    const sf::Time gameLen = sf::seconds(202);
+
     Window win(window);
+    win.gameClock.add(startTime);
 
     std::vector<std::unique_ptr<GameObject>> gameObjects;
-    gameObjects.push_back(std::make_unique<TimeRenderer>("../bin/font.ttf", sf::seconds(202)));
-    gameObjects.push_back(std::make_unique<MusicPlayer>("../bin/music.mp3", sf::seconds(202)));
-    gameObjects.push_back(std::make_unique<TestRect>(sf::seconds(2), sf::seconds(5)));
 
+    gameObjects.push_back(std::make_unique<TimeRenderer>("../bin/font.ttf", gameLen));
+    gameObjects.push_back(std::make_unique<MusicPlayer>("../bin/music.mp3", gameLen, startTime));
+    gameObjects.push_back(std::make_unique<TestRect>(sf::seconds(2), sf::seconds(5)));
 
     while (window.isOpen()) {
         sf::Event event {};

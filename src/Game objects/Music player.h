@@ -9,9 +9,11 @@
 
 class MusicPlayer : public GameObject {
 public:
-    explicit MusicPlayer(const std::string & path, sf::Time gameLen) : GameObject(sf::Time::Zero, gameLen) {
+    explicit MusicPlayer(const std::string & path, sf::Time gameLen, sf::Time offset)
+            : GameObject(sf::Time::Zero, gameLen) {
         music.openFromFile(path);
         music.play();
+        music.setPlayingOffset(offset);
     }
 
     void tick(Window & win) override {
