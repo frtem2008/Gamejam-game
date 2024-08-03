@@ -29,17 +29,15 @@ int main() {
     std::vector<std::unique_ptr<GameObject>> gameObjects;
 
     gameObjects.push_back(std::make_unique<MusicPlayer>("../bin/music.mp3", gameLen, startTime));
-    gameObjects.push_back(std::make_unique<TestRect>(sf::seconds(2), sf::seconds(5)));
+
     gameObjects.push_back(std::make_unique<fish::Player>(
             "../bin/livefish/first/ship.png", 6, 2, 2, 3,
             "../bin/livefish/first/background.png",
             sf::seconds(22), sf::seconds(42)
     ));
+
     gameObjects.push_back(std::make_unique<slava::Player>(sf::seconds(42), sf::seconds(65)));
-
     gameObjects.push_back(std::make_unique<slava::Boss>(sf::seconds(42), sf::seconds(65)));
-
-
 
     gameObjects.push_back(std::make_unique<TimeRenderer>("../bin/font.ttf", gameLen));
 
