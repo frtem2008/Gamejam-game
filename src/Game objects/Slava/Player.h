@@ -7,8 +7,7 @@
 
 #include <iostream>
 #include <ctime>
-#include <conio.h>
-#include <windows.h>
+
 #include "Game object.h"
 
 namespace slava {
@@ -82,7 +81,6 @@ namespace slava {
             win.win.draw(enemy);
 
         }
-
 
         sf::CircleShape shape;
         sf::CircleShape enemy;
