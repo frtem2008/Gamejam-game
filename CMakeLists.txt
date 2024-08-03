@@ -42,8 +42,10 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     target_compile_options(${PROJECT_NAME} PRIVATE /W4 /wd4100 /wd4068)
 endif ()
 
-set(ADDITIONAL_INCLUDE_DIRS "src")
+set(ADDITIONAL_INCLUDE_DIRS "src" "src/Game objects")
 target_include_directories(${PROJECT_NAME} PRIVATE ${ADDITIONAL_INCLUDE_DIRS})
 
 set(OUT_FILE_NAME ${PROJECT_NAME}-${CMAKE_BUILD_TYPE})
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${OUT_FILE_NAME})
+
+target_precompile_headers(${PROJECT_NAME} PUBLIC "src/Base.h")
