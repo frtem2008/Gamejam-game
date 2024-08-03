@@ -62,6 +62,6 @@ endif (MSVC)
 if (WIN32 AND SFML_BUILD_AUDIO)
     message(STATUS "Will copy openal32.dll to final output dir: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy ${FETCHCONTENT_BASE_DIR}/sfml-src/extlibs/bin/x64/openal32.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Debug
+            COMMAND ${CMAKE_COMMAND} -E copy ${FETCHCONTENT_BASE_DIR}/sfml-src/extlibs/bin/x64/openal32.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
     )
 endif ()
