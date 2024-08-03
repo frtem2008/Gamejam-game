@@ -29,7 +29,7 @@
 namespace sftools {
     class Chronometer {
     public:
-        explicit Chronometer(sf::Time initialTime = sf::Time::Zero) {
+        explicit Chronometer(sf::Time initialTime = sf::Time::Zero) : m_state(PAUSED) {
             reset();
             add(initialTime);
         }

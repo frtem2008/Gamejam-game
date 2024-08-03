@@ -6,9 +6,11 @@
 #include "Music player.h"
 #include "Time renderer.h"
 
+#include "livefish/First part/Player.h"
+
 int main() {
     sf::RenderWindow window(
-            sf::VideoMode(1000, 800),
+            sf::VideoMode(1422, 800),
             "Afterlife by livefish, Clown_sigma and Moyvaaaa",
             sf::Style::Default
     );
@@ -16,7 +18,7 @@ int main() {
     window.setPosition({878, 83});
     window.setFramerateLimit(60);
 
-    sf::Time startTime = sf::seconds(20);
+    sf::Time startTime = sf::seconds(21);
     const sf::Time gameLen = sf::seconds(202);
 
     Window win(window);
@@ -24,9 +26,15 @@ int main() {
 
     std::vector<std::unique_ptr<GameObject>> gameObjects;
 
-    gameObjects.push_back(std::make_unique<TimeRenderer>("../bin/font.ttf", gameLen));
     gameObjects.push_back(std::make_unique<MusicPlayer>("../bin/music.mp3", gameLen, startTime));
-    gameObjects.push_back(std::make_unique<TestRect>(sf::seconds(2), sf::seconds(5)));
+
+    gameObjects.push_back(std::make_unique<fish::Player>(
+            "../bin/livefish/first/ship.png", 6, 2, 2, 3,
+            "../bin/livefish/first/background.png",
+            sf::seconds(22), sf::seconds(42)
+    ));
+
+    gameObjects.push_back(std::make_unique<TimeRenderer>("../bin/font.ttf", gameLen));
 
     while (window.isOpen()) {
         sf::Event event {};
@@ -34,8 +42,10 @@ int main() {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Q) {
-                window.close();
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Q) {
+                    window.close();
+                }
             }
             if (event.type == sf::Event::LostFocus) {
                 win.isActive = false;
@@ -46,17 +56,19 @@ int main() {
                 win.gameClock.resume();
             }
         }
-
         window.clear();
 
-        for (auto &g : gameObjects) {
-            if (g->startTime <= win.gameClock.getElapsedTime() && win.gameClock.getElapsedTime() <= g->endTime)
+        for (auto & g : gameObjects) {
+            if (g->startTime <= win.gameClock.getElapsedTime() && win.gameClock.getElapsedTime() <= g->endTime) {
                 g->tick(win);
+            }
         }
 
-        for (auto & g : gameObjects)
-            if (g->startTime <= win.gameClock.getElapsedTime() && win.gameClock.getElapsedTime() <= g->endTime)
+        for (auto & g : gameObjects) {
+            if (g->startTime <= win.gameClock.getElapsedTime() && win.gameClock.getElapsedTime() <= g->endTime) {
                 g->draw(win);
+            }
+        }
 
         window.display();
     }

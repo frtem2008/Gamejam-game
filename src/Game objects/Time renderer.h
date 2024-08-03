@@ -23,7 +23,12 @@ public:
     }
 
     void draw(Window & win) override {
+        auto backupView = win.win.getView();
+        auto view = win.win.getDefaultView();
+
+        win.win.setView(view);
         win.win.draw(text);
+        win.win.setView(backupView);
     }
 
 private:

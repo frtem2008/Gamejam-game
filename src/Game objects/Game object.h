@@ -6,10 +6,14 @@
 #define GAMEJAMPROG_GAME_OBJECT_H
 
 #include "Base.h"
+#include "Animation.h"
+
+class Window;
 
 class GameObject {
 public:
     GameObject() = delete;
+
     GameObject(const sf::Time & startTime, const sf::Time & endTime) : startTime(startTime), endTime(endTime) {}
 
     virtual void tick(Window & win) = 0;

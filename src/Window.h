@@ -6,11 +6,13 @@
 #define GAMEJAMPROG_WINDOW_H
 
 #include "Base.h"
+#include "external/Chronometer.h"
 
 class Window {
 public:
     sf::RenderWindow & win;
     sftools::Chronometer gameClock;
+
     bool isActive = true;
 
     explicit Window(sf::RenderWindow & win) : win(win) {
