@@ -11,7 +11,7 @@ class Window {
 public:
     sf::RenderWindow & win;
     sftools::Chronometer gameClock;
-    bool isActive {};
+    bool isActive = true;
 
     explicit Window(sf::RenderWindow & win) : win(win) {}
 };
