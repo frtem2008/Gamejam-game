@@ -13,7 +13,9 @@ public:
     sftools::Chronometer gameClock;
     bool isActive = true;
 
-    explicit Window(sf::RenderWindow & win) : win(win) {}
+    explicit Window(sf::RenderWindow & win) : win(win) {
+        gameClock.resume();
+    }
 };
 
 
