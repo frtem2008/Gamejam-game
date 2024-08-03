@@ -4,5 +4,5 @@ mkdir build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
 cmake --build . --parallel 8
-cd ..
-out/GamejamProg-Release.exe
+cd ..\out
+GamejamProg-Release.exe
