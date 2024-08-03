@@ -50,6 +50,15 @@ set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${OUT_FILE_NAME})
 
 target_precompile_headers(${PROJECT_NAME} PUBLIC "src/Base.h")
 
+if (MSVC)
+    set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+    set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+    set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+    set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_MinSizeRel ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+    set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RelWithDebInfo ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+    # etc for the other available configuration types (MinSizeRel, RelWithDebInfo)
+endif (MSVC)
+
 if (WIN32 AND SFML_BUILD_AUDIO)
     message(STATUS "Will copy openal32.dll to final output dir: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
