@@ -157,17 +157,17 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
                 sf::seconds(44), sf::seconds(50),
                 sf::Vector2f(i, 4)));
     }
-    int x =0;
+    int x = 0;
     for (int i = 0; i <= 4; i++) {
         gameObjects.push_back(std::make_unique<slava::FireBall>(
                 sf::seconds(48), sf::seconds(53),
                 sf::Vector2f(4, i)));
     }
 
-    for (int i  = 0; i < 3;i++){
+    for (int i = 0; i < 3; i++) {
         gameObjects.push_back(std::make_unique<slava::Laser>(
-                sf::seconds(52), sf::seconds(58),x));
-        x+=300;
+                sf::seconds(52), sf::seconds(58), x));
+        x += 300;
     }
     gameObjects.push_back(std::make_unique<slava::Boss>(
             sf::seconds(40), sf::seconds(65)));
