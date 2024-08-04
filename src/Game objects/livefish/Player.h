@@ -17,9 +17,11 @@ namespace fish {
             player.setPosition(100, 135 - 16);
         }
 
-    public:
+    private:
         bool wasSpacePressed = false;
         float velocity = 0, velocityMax = 1.3, acceleration = 0;
+
+        float velocityX = 1, accelerationX = 0;
 
         sf::Sprite player;
         Animation playerAnim;
@@ -46,11 +48,15 @@ namespace fish {
         }
 
         void movePlayer(Window & win) {
-            if (win.gameClock.getElapsedTime() > endTime - sf::seconds(3)) {
-                goStraight();
-            } else {
+            if (win.gameClock.getElapsedTime() < endTime - sf::seconds(3)) {
                 handleInput();
+            } else {
+                goStraight();
+                if (win.gameClock.getElapsedTime() > endTime - sf::seconds(0.9)) {
+                    accelerationX = 0.1;
+                }
             }
+
             loopOnBoundaries();
             moveAndRotate();
         }
@@ -94,7 +100,9 @@ namespace fish {
             velocity = std::min(velocityMax, std::max(-velocityMax, velocity));
 
             velocity += acceleration;
-            player.move({1, velocity});
+            velocityX += accelerationX;
+
+            player.move({velocityX, velocity});
 
             player.setOrigin(16, 16);
             player.setRotation(velocity * 50);
@@ -123,7 +131,7 @@ namespace fish {
 
         void setView(Window & win) {
             auto view = win.win.getDefaultView();
-            view.setCenter({player.getPosition().x + 100, 135});
+            view.setCenter({200 + 60 * (win.gameClock.getElapsedTime() - startTime).asSeconds(), 135});
             view.zoom(0.25);
             win.win.setView(view);
         }

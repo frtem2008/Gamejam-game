@@ -13,6 +13,7 @@
 #include "livefish/Player.h"
 
 #include "Slava/Player.h"
+#include "Slava/Boss.h"
 
 template<>
     int randomValue<int>(sf::Vector2i interval) {
