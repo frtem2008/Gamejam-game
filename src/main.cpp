@@ -14,6 +14,7 @@
 
 #include "Slava/Player.h"
 #include "Slava/Boss.h"
+#include "Slava/Laser.h"
 
 template<>
     int randomValue<int>(sf::Vector2i interval) {
@@ -137,12 +138,9 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
     }
 
     //Slava Part
-    slava::FireBall fireBall = slava::FireBall(sf::seconds(44), sf::seconds(50),
-                                               sf::Vector2f(0, 0));
     gameObjects.push_back(std::make_unique<slava::Player>(
-            sf::seconds(42), sf::seconds(65)));
-    gameObjects.push_back(std::make_unique<slava::Boss>(
-            sf::seconds(42), sf::seconds(65)));
+            sf::seconds(40), sf::seconds(65)));
+
     for (int i = 0; i < 5; i++) {
         gameObjects.push_back(std::make_unique<slava::FireBall>(
                 sf::seconds(42), sf::seconds(45),
@@ -155,12 +153,21 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
                 sf::seconds(44), sf::seconds(50),
                 sf::Vector2f(i, 4)));
     }
-
+    int x =0;
     for (int i = 0; i <= 4; i++) {
         gameObjects.push_back(std::make_unique<slava::FireBall>(
                 sf::seconds(48), sf::seconds(53),
                 sf::Vector2f(4, i)));
     }
+
+    for (int i  = 0; i < 3;i++){
+        gameObjects.push_back(std::make_unique<slava::Laser>(
+                sf::seconds(52), sf::seconds(58),x));
+        x+=300;
+    }
+    gameObjects.push_back(std::make_unique<slava::Boss>(
+            sf::seconds(40), sf::seconds(65)));
+
 
     gameObjects.push_back(std::make_unique<BasicText>(
             "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White, sf::Vector2f(0, 0),

@@ -10,7 +10,7 @@
 #include <list>
 #include "FireBall.h"
 #include "Game object.h"
-
+#include "Laser.h"
 namespace slava {
     class Player : public GameObject {
     public:
@@ -55,15 +55,27 @@ namespace slava {
                 if (astrCollides(win, obj)) {
                     win.restartOnNextFrame = true;
                 }
+                if (laserCollides(win, obj)) {
+                    win.restartOnNextFrame = true;
+                    std::cout << "con"<< std::endl;
+                }else{
+                    std::cout<<"notcon"<<std::endl;
+                }
             }
             livesText.setString("Lives: " + std::to_string(lives));
         }
-        float distance(sf::Vector2f pos2) {
-            sf::Vector2f pos = sprite.getGlobalBounds().getPosition() + sprite.getOrigin() / 2.f;
-            return sqrtf((pos.x - pos2.x) * (pos.x - pos2.x) + (pos.y - pos2.y) * (pos.y - pos2.y));
-        }
-        float radius() {
-            return sprite.getGlobalBounds().height / 2;
+        bool laserCollides(Window & win, std::unique_ptr<GameObject> & obj) {
+            Laser * astr;
+            if ((astr = dynamic_cast<Laser *>(obj.get()))) {
+                sf::Vector2f playerCenter =
+                        sprite.getGlobalBounds().getPosition() + sprite.getOrigin() / 2.f;
+                float playerRadius = sprite.getGlobalBounds().height / 2;
+
+                if (astr->onScreen(win) && astr->distance(playerCenter) * 1.5 <= astr->radius() + playerRadius) {
+                    return true;
+                }
+            }
+            return false;
         }
         bool astrCollides(Window & win, std::unique_ptr<GameObject> & obj) {
             FireBall * astr;
@@ -78,6 +90,7 @@ namespace slava {
             }
             return false;
         }
+
         void draw(Window & win) override {
             win.win.draw(bg);
             win.win.draw(sprite);
