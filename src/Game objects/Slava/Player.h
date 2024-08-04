@@ -11,6 +11,54 @@
 #include "Game object.h"
 
 namespace slava {
+    class FireBall : public GameObject {
+    public:
+        sf::Vector2f speed;
+
+        FireBall(const sf::Time & startTime, const sf::Time & endTime,
+                 sf::Vector2f speed)
+                : GameObject(startTime, endTime), speed(speed){
+
+            sprite.setPosition(500, 50);//Игрок
+            texture.loadFromFile("../bin/livefish/first/asteroids/medium.png");
+            sprite.setTexture(texture);
+
+        }
+
+
+        void tick(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) override {
+            sprite.move(speed);
+
+        }
+        void draw(Window & win) override {
+            win.win.draw(sprite);
+        }
+
+        bool onScreen(Window & win) {
+            auto view = win.win.getView();
+            auto center = view.getCenter();
+            auto size = view.getSize();
+
+            return sprite.getGlobalBounds().intersects(
+                    sf::FloatRect(center - size / 2.f, size)
+            );
+        }
+
+        float distance(sf::Vector2f pos2) {
+            sf::Vector2f pos = sprite.getGlobalBounds().getPosition() + sprite.getOrigin() / 2.f;
+            return sqrtf((pos.x - pos2.x) * (pos.x - pos2.x) + (pos.y - pos2.y) * (pos.y - pos2.y));
+        }
+
+        float radius() {
+            return sprite.getGlobalBounds().height / 2;
+        }
+
+
+
+
+        sf::Sprite sprite;
+        sf::Texture texture;
+    };
     class Player : public GameObject {
     public:
         Player(const sf::Time & startTime, const sf::Time & endTime) : GameObject(startTime, endTime) {
@@ -18,10 +66,11 @@ namespace slava {
             texture.loadFromFile("../bin/Player.png");
             sprite.setTexture(texture);
 
-
-            shape.setPosition(120, 100);
-            shape.setFillColor(sf::Color::White);
-            shape.setSize(sf::Vector2f(10, 10));
+            livesFont.loadFromFile("../bin/font.ttf");
+            livesText.setFont(livesFont);
+            livesText.setStyle(sf::Text::Style::Underlined);
+            livesText.setCharacterSize(16);
+            livesText.setPosition(100, 0);
         }
 
         void tick(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) override {
@@ -40,23 +89,51 @@ namespace slava {
                 sprite.move(-8, 0);
             }
 
-            if (!sprite.getGlobalBounds().intersects(shape.getGlobalBounds())) {
-                std::cout << "not colision" << std::endl;
-            } else {
-                std::cout << "colision" << std::endl;
+            for (auto & obj : gameObjects) {
+                if (astrCollides(win, obj)) {
+                    win.restartOnNextFrame = true;
+                }
             }
+
+            livesText.setString("Lives: " + std::to_string(lives));
         }
 
+        float distance(sf::Vector2f pos2) {
+            sf::Vector2f pos = sprite.getGlobalBounds().getPosition() + sprite.getOrigin() / 2.f;
+            return sqrtf((pos.x - pos2.x) * (pos.x - pos2.x) + (pos.y - pos2.y) * (pos.y - pos2.y));
+        }
+
+        float radius() {
+            return sprite.getGlobalBounds().height / 2;
+        }
+
+        bool astrCollides(Window & win, std::unique_ptr<GameObject> & obj) {
+            FireBall * astr;
+
+            if ((astr = dynamic_cast<FireBall *>(obj.get()))) {
+                sf::Vector2f playerCenter =
+                        sprite.getGlobalBounds().getPosition() + sprite.getOrigin() / 2.f;
+                float playerRadius = sprite.getGlobalBounds().height / 2;
+
+                if (astr->onScreen(win) && astr->distance(playerCenter) * 1.5 <= astr->radius() + playerRadius) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         void draw(Window & win) override {
             win.win.draw(sprite);
-            win.win.draw(shape);
         }
-
         //переменные
         sf::Sprite sprite;
         sf::Texture texture;
-        sf::RectangleShape shape;
+
+        int lives = 3;
+        sf::Text livesText;
+        sf::Font livesFont;
+
     };
 
     class Boss : public GameObject {
@@ -77,27 +154,7 @@ namespace slava {
         sf::CircleShape enemy;
     };
 
-    class FireBall : public GameObject {
-    public:
-        sf::Vector2f speed;
 
-        FireBall(const sf::Time & startTime, const sf::Time & endTime, sf::Vector2f speed)
-                : GameObject(startTime, endTime), speed(speed) {
-            shape.setPosition(600, 0);//Фаерболл
-            shape.setFillColor(sf::Color::Red);
-            shape.setRadius(50);
-        }
-
-        void tick(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) override {
-            shape.move(speed);
-        }
-
-        void draw(Window & win) override {
-            win.win.draw(shape);
-        }
-
-        sf::CircleShape shape;
-    };
 
 };
 

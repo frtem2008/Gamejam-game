@@ -103,7 +103,7 @@ void deferredDelete(std::vector<std::unique_ptr<GameObject>> & gameObjects,
 }
 
 void startGame(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) {
-    sf::Time startTime = sf::seconds(20);
+    sf::Time startTime = sf::seconds(42);
     const sf::Time gameLen = sf::seconds(202);
 
     win.gameClock.reset(true);
@@ -129,24 +129,23 @@ void startGame(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObje
     }
 
     //Slava Part
+    slava::FireBall fireBall = slava::FireBall(sf::seconds(44), sf::seconds(50),
+                                               sf::Vector2f(0, 0));
     gameObjects.push_back(std::make_unique<slava::Player>(
             sf::seconds(42), sf::seconds(65)));
     gameObjects.push_back(std::make_unique<slava::Boss>(
             sf::seconds(42), sf::seconds(65)));
-
-
     for (int i = 0; i < 5; i++) {
         gameObjects.push_back(std::make_unique<slava::FireBall>(
                 sf::seconds(42), sf::seconds(45),
-                sf::Vector2f(-4, i)
-        ));
+                sf::Vector2f(-4, i))
+        );
     }
 
     for (int i = -4; i <= 4; i++) {
         gameObjects.push_back(std::make_unique<slava::FireBall>(
                 sf::seconds(44), sf::seconds(50),
-                sf::Vector2f(i, 4)
-        ));
+                sf::Vector2f(i, 4)));
     }
 
     gameObjects.push_back(std::make_unique<TimeRenderer>("../bin/font.ttf", gameLen));
