@@ -20,7 +20,7 @@ namespace slava {
                  sf::Vector2f speed)
                 : GameObject(startTime, endTime), speed(speed){
 
-            sprite.setPosition(500, 50);//Игрок
+            sprite.setPosition(630, 50);//Игрок
             texture.loadFromFile("../bin/livefish/first/asteroids/medium.png");
             sprite.setTexture(texture);
 
@@ -81,7 +81,7 @@ namespace slava {
         }
 
         void tick(Window & win, gameObjectVec & gameObjects) override {
-            std::cout << sprite.getPosition().y <<"|"<<sprite.getPosition().x<< std::endl;
+
            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) and sprite.getGlobalBounds().top > 0 ) {
                 sprite.move(0, -8);
             }
