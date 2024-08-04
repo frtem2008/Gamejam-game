@@ -23,16 +23,36 @@ namespace fish {
         }
 
         void tick(Window & win) override {
-            player.move({1, 0});
+            using Key = sf::Keyboard::Key;
+            if (sf::Keyboard::isKeyPressed(Key::Space)) {
+                if (!wasSpacePressed) {
+                    if (acceleration == 0) {
+                        acceleration = 0.04;
+                    } else {
+                        acceleration = -acceleration;
+                    }
+                }
+                wasSpacePressed = true;
+            } else {
+                wasSpacePressed = false;
+            }
+
+            velocity = std::min(velocityMax, std::max(-velocityMax, velocity));
+
+            velocity += acceleration;
+            player.move({1, velocity});
+
+            player.setOrigin(16, 16);
+            player.setRotation(velocity * 50);
+
             playerAnim.update();
             player.setTexture(*playerAnim.curFrame());
         }
 
         void draw(Window & win) override {
             auto view = win.win.getDefaultView();
-            view.setCenter({player.getPosition().x + 100, player.getPosition().y});
+            view.setCenter({player.getPosition().x + 100, 135});
             view.zoom(0.25);
-
             win.win.setView(view);
 
             win.win.draw(bg);
@@ -44,6 +64,9 @@ namespace fish {
         }
 
     public:
+        bool wasSpacePressed = false;
+        float velocity = 0, velocityMax = 1.3, acceleration = 0;
+
         sf::Texture bgTex;
         sf::Sprite player, bg;
         Animation playerAnim;
