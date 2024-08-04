@@ -27,15 +27,6 @@ namespace fish {
             sprite.setOrigin(tex.getSize().x / 2, tex.getSize().y / 2);
         }
 
-        void tick(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) override {
-            sprite.move(speed);
-            sprite.rotate(angVel);
-        }
-
-        void draw(Window & win) override {
-            win.win.draw(sprite);
-        }
-
         bool onScreen(Window & win) {
             auto view = win.win.getView();
             auto center = view.getCenter();
@@ -54,6 +45,17 @@ namespace fish {
         float radius() {
             return sprite.getGlobalBounds().height / 2;
         }
+
+    private:
+        void tick(Window & win, gameObjectVec & gameObjects) override {
+            sprite.move(speed);
+            sprite.rotate(angVel);
+        }
+
+        void draw(Window & win) override {
+            win.win.draw(sprite);
+        }
+
 
     private:
         sf::Vector2f speed;

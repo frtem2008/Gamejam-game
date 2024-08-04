@@ -9,7 +9,7 @@ bool GameObject::available(const Window & win) const {
            win.gameClock.getElapsedTime() <= endTime;
 }
 
-bool GameObject::tryTick(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) {
+bool GameObject::tryTick(Window & win, gameObjectVec &gameObjects) {
     bool avail = available(win);
     if (avail) {
         tick(win, gameObjects);

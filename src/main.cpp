@@ -6,6 +6,10 @@
 #include "Music player.h"
 #include "Time renderer.h"
 
+#include "drawing/BasicPicture.h"
+#include "drawing/AnimatedRectangle.h"
+#include "drawing/BasicText.h"
+
 #include "livefish/Asteroid.h"
 #include "livefish/Player.h"
 
@@ -16,10 +20,10 @@ template<>
         return std::uniform_int_distribution<>(interval.x, interval.y)(random_data);
     }
 
-void deferredDelete(std::vector<std::unique_ptr<GameObject>> & gameObjects,
+void deferredDelete(gameObjectVec & gameObjects,
                     std::vector<std::unique_ptr<GameObject> *> & toDelete);
 
-void startGame(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects);
+void startGame(Window & win, gameObjectVec & gameObjects);
 
 int main() {
     sf::RenderWindow window(
@@ -32,7 +36,7 @@ int main() {
     window.setFramerateLimit(60);
 
     Window win(window);
-    std::vector<std::unique_ptr<GameObject>> gameObjects;
+    gameObjectVec gameObjects;
 
     startGame(win, gameObjects);
 
@@ -87,7 +91,7 @@ int main() {
     return 0;
 }
 
-void deferredDelete(std::vector<std::unique_ptr<GameObject>> & gameObjects,
+void deferredDelete(gameObjectVec & gameObjects,
                     std::vector<std::unique_ptr<GameObject> *> & toDelete) {
     auto firstToRemove = std::stable_partition(
             gameObjects.begin(), gameObjects.end(),
@@ -102,8 +106,8 @@ void deferredDelete(std::vector<std::unique_ptr<GameObject>> & gameObjects,
     toDelete.clear();
 }
 
-void startGame(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) {
-    sf::Time startTime = sf::seconds(42);
+void startGame(Window & win, gameObjectVec & gameObjects) {
+    sf::Time startTime = sf::seconds(18);
     const sf::Time gameLen = sf::seconds(202);
 
     win.gameClock.reset(true);
@@ -114,9 +118,13 @@ void startGame(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObje
     gameObjects.push_back(std::make_unique<MusicPlayer>("../bin/music.mp3", gameLen, startTime));
 
     // Livefish part
+    gameObjects.push_back(std::make_unique<BasicPicture>(
+            "../bin/livefish/first/background.png", sf::Vector2f(-20, 0),
+            sf::seconds(22), sf::seconds(42)
+    ));
+
     gameObjects.push_back(std::make_unique<fish::Player>(
             "../bin/livefish/first/ship.png", 6, 2, 2, 3,
-            "../bin/livefish/first/background.png",
             sf::seconds(22), sf::seconds(42)
     ));
 
@@ -148,5 +156,11 @@ void startGame(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObje
                 sf::Vector2f(i, 4)));
     }
 
-    gameObjects.push_back(std::make_unique<TimeRenderer>("../bin/font.ttf", gameLen));
+    gameObjects.push_back(std::make_unique<BasicText>(
+            "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White, sf::Vector2f(0, 0),
+            [ ](Window & win, gameObjectVec & gameObjects) -> std::string {
+                return std::to_string(win.gameClock.getElapsedTime().asSeconds());
+            },
+            sf::Time::Zero, gameLen
+    ));
 }

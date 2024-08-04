@@ -8,6 +8,7 @@
 #include <iostream>
 #include <ctime>
 #include <list>
+
 #include "Game object.h"
 
 namespace slava {
@@ -26,7 +27,7 @@ namespace slava {
         }
 
 
-        void tick(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) override {
+        void tick(Window & win, gameObjectVec & gameObjects) override {
             sprite.move(speed);
 
         }
@@ -73,7 +74,7 @@ namespace slava {
             livesText.setPosition(100, 0);
         }
 
-        void tick(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) override {
+        void tick(Window & win, gameObjectVec & gameObjects) override {
            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
                 sprite.move(0, -8);
             }
@@ -144,7 +145,7 @@ namespace slava {
             enemy.setRadius(100);
         }
 
-        void tick(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) override {
+        void tick(Window & win, gameObjectVec & gameObjects) override {
         }
 
         void draw(Window & win) override {

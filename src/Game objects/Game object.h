@@ -6,15 +6,17 @@
 #define GAMEJAMPROG_GAME_OBJECT_H
 
 #include "Base.h"
-#include "Animation.h"
+#include "drawing/Animation.h"
 
 class Window;
 
 class GameObject {
 public:
+    using gameObjectVec = std::vector<std::unique_ptr<GameObject>>;
+
     GameObject(const sf::Time & startTime, const sf::Time & endTime) : startTime(startTime), endTime(endTime) {}
 
-    virtual bool tryTick(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) final;
+    virtual bool tryTick(Window & win, gameObjectVec &gameObjects) final;
     virtual void tryDraw(Window & win) final;
 
     virtual ~GameObject() = default;
@@ -29,8 +31,11 @@ private:
 
     virtual void onHide(Window & win) {};
 
-    virtual void tick(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) = 0;
+    virtual void tick(Window & win, gameObjectVec &gameObjects) = 0;
     virtual void draw(Window & win) = 0;
 };
+
+using gameObjectVec = std::vector<std::unique_ptr<GameObject>>;
+
 
 #endif //GAMEJAMPROG_GAME_OBJECT_H
