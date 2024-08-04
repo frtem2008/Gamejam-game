@@ -23,18 +23,13 @@ namespace slava {
             sprite.setPosition(630, 50);//Игрок
             texture.loadFromFile("../bin/livefish/first/asteroids/medium.png");
             sprite.setTexture(texture);
-
         }
-
-
         void tick(Window & win, gameObjectVec & gameObjects) override {
             sprite.move(speed);
-
         }
         void draw(Window & win) override {
             win.win.draw(sprite);
         }
-
         bool onScreen(Window & win) {
             auto view = win.win.getView();
             auto center = view.getCenter();
@@ -44,28 +39,23 @@ namespace slava {
                     sf::FloatRect(center - size / 2.f, size)
             );
         }
-
         float distance(sf::Vector2f pos2) {
             sf::Vector2f pos = sprite.getGlobalBounds().getPosition() + sprite.getOrigin() / 2.f;
             return sqrtf((pos.x - pos2.x) * (pos.x - pos2.x) + (pos.y - pos2.y) * (pos.y - pos2.y));
         }
-
         float radius() {
             return sprite.getGlobalBounds().height / 2;
         }
-
-
-
-
         sf::Sprite sprite;
         sf::Texture texture;
     };
     class Player : public GameObject {
     public:
         Player(const sf::Time & startTime, const sf::Time & endTime) : GameObject(startTime, endTime) {
-            sprite.setPosition(50, 50);//Игрок
+            sprite.setPosition(50, 400);//Игрок
             sprite.setOrigin(16,16);
-            texture.loadFromFile("../bin/Player.png");
+            sprite.setScale(1.5,1.5);
+            texture.loadFromFile("../bin/Slava/Player.png");
             sprite.setTexture(texture);
 
             livesFont.loadFromFile("../bin/font.ttf");
@@ -74,54 +64,44 @@ namespace slava {
             livesText.setCharacterSize(16);
             livesText.setPosition(100, 0);
 
-            bgTexture.loadFromFile("../bin/Bg_Slava.png");
+            bgTexture.loadFromFile("../bin/Slava/Bg_Slava.png");
             bg.setTexture(bgTexture);
             bg.setPosition(0, 0);
             bg.setScale(2,2);
         }
 
         void tick(Window & win, gameObjectVec & gameObjects) override {
-
            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) and sprite.getGlobalBounds().top > 0 ) {
                 sprite.move(0, -8);
             }
-
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) and sprite.getPosition().y < 800) {
                 sprite.move(0, 8);
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)and sprite.getPosition().x < 1422) {
                 sprite.move(8, 0);
+                texture.loadFromFile("../bin/Slava/Player.png");
             }
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)and sprite.getGlobalBounds().left >0) {
                 sprite.move(-8, 0);
+                texture.loadFromFile("../bin/Slava/Player_flip.png");
             }
-
             for (auto & obj : gameObjects) {
                 if (astrCollides(win, obj)) {
                     win.restartOnNextFrame = true;
                 }
             }
-
-
-
-
-
             livesText.setString("Lives: " + std::to_string(lives));
         }
-
         float distance(sf::Vector2f pos2) {
             sf::Vector2f pos = sprite.getGlobalBounds().getPosition() + sprite.getOrigin() / 2.f;
             return sqrtf((pos.x - pos2.x) * (pos.x - pos2.x) + (pos.y - pos2.y) * (pos.y - pos2.y));
         }
-
         float radius() {
             return sprite.getGlobalBounds().height / 2;
         }
-
         bool astrCollides(Window & win, std::unique_ptr<GameObject> & obj) {
             FireBall * astr;
-
             if ((astr = dynamic_cast<FireBall *>(obj.get()))) {
                 sf::Vector2f playerCenter =
                         sprite.getGlobalBounds().getPosition() + sprite.getOrigin() / 2.f;
@@ -131,14 +111,11 @@ namespace slava {
                     return true;
                 }
             }
-
             return false;
         }
-
         void draw(Window & win) override {
             win.win.draw(bg);
             win.win.draw(sprite);
-
         }
         //переменные
         sf::Sprite sprite;
@@ -167,7 +144,6 @@ namespace slava {
         void draw(Window & win) override {
             win.win.draw(enemy);
         }
-
 
         sf::CircleShape enemy;
     };

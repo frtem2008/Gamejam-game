@@ -106,7 +106,7 @@ void deferredDelete(gameObjectVec & gameObjects,
 }
 
 void startGame(Window & win, gameObjectVec & gameObjects) {
-    sf::Time startTime = sf::seconds(20);
+    sf::Time startTime = sf::seconds(42);
     const sf::Time gameLen = sf::seconds(202);
 
     win.gameClock.reset(true);
