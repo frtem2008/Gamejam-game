@@ -155,6 +155,12 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
                 sf::Vector2f(i, 4)));
     }
 
+    for (int i = 0; i <= 4; i++) {
+        gameObjects.push_back(std::make_unique<slava::FireBall>(
+                sf::seconds(48), sf::seconds(53),
+                sf::Vector2f(4, i)));
+    }
+
     gameObjects.push_back(std::make_unique<BasicText>(
             "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White, sf::Vector2f(0, 0),
             [ ](Window & win, gameObjectVec & gameObjects) -> std::string {
