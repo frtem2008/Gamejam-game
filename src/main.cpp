@@ -36,8 +36,10 @@ int main() {
             sf::seconds(22), sf::seconds(42)
     ));
     //Slava Part
+
     gameObjects.push_back(std::make_unique<slava::Player>(sf::seconds(42), sf::seconds(65)));
     gameObjects.push_back(std::make_unique<slava::Boss>(sf::seconds(42), sf::seconds(65)));
+
 
     int x = 0;
 
