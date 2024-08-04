@@ -64,6 +64,7 @@ namespace slava {
     public:
         Player(const sf::Time & startTime, const sf::Time & endTime) : GameObject(startTime, endTime) {
             sprite.setPosition(50, 50);//Игрок
+            sprite.setOrigin(16,16);
             texture.loadFromFile("../bin/Player.png");
             sprite.setTexture(texture);
 
@@ -72,21 +73,27 @@ namespace slava {
             livesText.setStyle(sf::Text::Style::Underlined);
             livesText.setCharacterSize(16);
             livesText.setPosition(100, 0);
+
+            bgTexture.loadFromFile("../bin/Bg_Slava.png");
+            bg.setTexture(bgTexture);
+            bg.setPosition(0, 0);
+            bg.setScale(2,2);
         }
 
         void tick(Window & win, gameObjectVec & gameObjects) override {
-           if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+            std::cout << sprite.getPosition().y <<"|"<<sprite.getPosition().x<< std::endl;
+           if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) and sprite.getGlobalBounds().top > 0 ) {
                 sprite.move(0, -8);
             }
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) and sprite.getPosition().y < 800) {
                 sprite.move(0, 8);
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)and sprite.getPosition().x < 1422) {
                 sprite.move(8, 0);
             }
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)and sprite.getGlobalBounds().left >0) {
                 sprite.move(-8, 0);
             }
 
@@ -95,6 +102,10 @@ namespace slava {
                     win.restartOnNextFrame = true;
                 }
             }
+
+
+
+
 
             livesText.setString("Lives: " + std::to_string(lives));
         }
@@ -125,7 +136,9 @@ namespace slava {
         }
 
         void draw(Window & win) override {
+            win.win.draw(bg);
             win.win.draw(sprite);
+
         }
         //переменные
         sf::Sprite sprite;
@@ -134,6 +147,9 @@ namespace slava {
         int lives = 3;
         sf::Text livesText;
         sf::Font livesFont;
+
+        sf::Texture bgTexture;
+        sf::Sprite bg;
 
     };
 
@@ -151,6 +167,7 @@ namespace slava {
         void draw(Window & win) override {
             win.win.draw(enemy);
         }
+
 
         sf::CircleShape enemy;
     };
