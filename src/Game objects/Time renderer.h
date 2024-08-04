@@ -18,7 +18,7 @@ public:
         text.setPosition(0, 0);
     }
 
-    void tick(Window & win) override {
+    void tick(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) override {
         text.setString(std::to_string(win.gameClock.getElapsedTime().asSeconds()));
     }
 

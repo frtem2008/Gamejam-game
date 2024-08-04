@@ -17,7 +17,7 @@ public:
         music.setPlayingOffset(offset);
     }
 
-    void tick(Window & win) override {
+    void tick(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) override {
         if (!win.isActive) {
             music.pause();
             playing = false;

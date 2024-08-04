@@ -24,7 +24,17 @@
 #include <optional>
 #include <variant>
 
+#include <functional>
+
 #include "SFML/Graphics.hpp"
 #include "SFML/Audio.hpp"
 
 inline std::mt19937 random_data(std::chrono::steady_clock::now().time_since_epoch().count());
+
+template<typename T>
+    T randomValue(sf::Vector2<T> interval) {
+        return std::uniform_real_distribution<T>(interval.x, interval.y)(random_data);
+    }
+
+template<>
+    int randomValue<int>(sf::Vector2i interval);

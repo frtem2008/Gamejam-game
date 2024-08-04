@@ -1,0 +1,36 @@
+//
+// Created by livefish on 8/4/24.
+//
+#include "Game object.h"
+#include "Window.h"
+
+bool GameObject::available(const Window & win) const {
+    return startTime <= win.gameClock.getElapsedTime() &&
+           win.gameClock.getElapsedTime() <= endTime;
+}
+
+bool GameObject::tryTick(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) {
+    bool avail = available(win);
+    if (avail) {
+        tick(win, gameObjects);
+    }
+
+    if (avail && !shown) {
+        shown = true;
+        onShow(win);
+    }
+
+    if (!avail && shown) {
+        shown = false;
+        onHide(win);
+        expired = true;
+    }
+
+    return expired;
+}
+
+void GameObject::tryDraw(Window & win) {
+    if (available(win)) {
+        draw(win);
+    }
+}

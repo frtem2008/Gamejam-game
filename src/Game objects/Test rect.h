@@ -15,7 +15,7 @@ public:
         shape.setSize({100, 20});
     }
 
-    void tick(Window & win) override {
+    void tick(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) override {
         shape.move({1, 0});
     }
 

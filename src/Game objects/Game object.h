@@ -12,36 +12,10 @@ class Window;
 
 class GameObject {
 public:
-    GameObject() = delete;
-
     GameObject(const sf::Time & startTime, const sf::Time & endTime) : startTime(startTime), endTime(endTime) {}
 
-    virtual bool tryTick(Window & win) final {
-        bool avail = available(win);
-        if (avail) {
-            tick(win);
-        }
-
-        if (avail && !shown) {
-            shown = true;
-            onShow(win);
-        }
-
-        if (!avail && shown) {
-            shown = false;
-            onHide(win);
-            expired = true;
-        }
-
-        return expired;
-    };
-
-    virtual void tryDraw(Window & win) final {
-        if (available(win)) {
-            draw(win);
-        }
-    }
-
+    virtual bool tryTick(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) final;
+    virtual void tryDraw(Window & win) final;
 
     virtual ~GameObject() = default;
 
@@ -49,16 +23,13 @@ private:
     sf::Time startTime, endTime;
     bool shown = false, expired = false;
 
-    [[nodiscard]] bool available(const Window & win) const {
-        return startTime <= win.gameClock.getElapsedTime() &&
-               win.gameClock.getElapsedTime() <= endTime;
-    };
+    [[nodiscard]] bool available(const Window & win) const;
 
     virtual void onShow(Window & win) {};
 
     virtual void onHide(Window & win) {};
 
-    virtual void tick(Window & win) = 0;
+    virtual void tick(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) = 0;
     virtual void draw(Window & win) = 0;
 };
 

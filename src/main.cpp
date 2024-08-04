@@ -6,12 +6,20 @@
 #include "Music player.h"
 #include "Time renderer.h"
 
+#include "livefish/Asteroid.h"
 #include "livefish/Player.h"
 
 #include "Slava/Player.h"
 
-void defferedDelete(std::vector<std::unique_ptr<GameObject>> & gameObjects,
+template<>
+    int randomValue<int>(sf::Vector2i interval) {
+        return std::uniform_int_distribution<>(interval.x, interval.y)(random_data);
+    }
+
+void deferredDelete(std::vector<std::unique_ptr<GameObject>> & gameObjects,
                     std::vector<std::unique_ptr<GameObject> *> & toDelete);
+
+void startGame(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects);
 
 int main() {
     sf::RenderWindow window(
@@ -23,21 +31,102 @@ int main() {
     window.setPosition({878, 83});
     window.setFramerateLimit(60);
 
+    Window win(window);
+    std::vector<std::unique_ptr<GameObject>> gameObjects;
+
+    startGame(win, gameObjects);
+
+    std::vector<std::unique_ptr<GameObject> *> toDelete;
+
+    while (window.isOpen()) {
+        deferredDelete(gameObjects, toDelete);
+
+        sf::Event event {};
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Q) {
+                window.close();
+            }
+
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::R) {
+                win.restartOnNextFrame = true;
+            }
+
+            if (event.type == sf::Event::LostFocus) {
+                win.isActive = false;
+                win.gameClock.pause();
+            }
+            if (event.type == sf::Event::GainedFocus) {
+                win.isActive = true;
+                win.gameClock.resume();
+            }
+        }
+        window.clear();
+
+        for (auto & g : gameObjects) {
+            bool expired = g->tryTick(win, gameObjects);
+            if (expired) {
+                toDelete.push_back(&g);
+            }
+        }
+
+        for (auto & g : gameObjects) {
+            g->tryDraw(win);
+        }
+
+        window.display();
+
+        if (win.restartOnNextFrame) {
+            win.restartOnNextFrame = false;
+            startGame(win, gameObjects);
+        }
+    }
+
+    return 0;
+}
+
+void deferredDelete(std::vector<std::unique_ptr<GameObject>> & gameObjects,
+                    std::vector<std::unique_ptr<GameObject> *> & toDelete) {
+    auto firstToRemove = std::stable_partition(
+            gameObjects.begin(), gameObjects.end(),
+            [&toDelete](std::unique_ptr<GameObject> & g) {
+                return std::find(toDelete.begin(), toDelete.end(), &g) == toDelete.end();
+            }
+    );
+    std::for_each(firstToRemove, gameObjects.end(), [ ](std::unique_ptr<GameObject> & g) {
+        g.reset();
+    });
+    gameObjects.erase(firstToRemove, gameObjects.end());
+    toDelete.clear();
+}
+
+void startGame(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) {
     sf::Time startTime = sf::seconds(20);
     const sf::Time gameLen = sf::seconds(202);
 
-    Window win(window);
+    win.gameClock.reset(true);
     win.gameClock.add(startTime);
 
-    std::vector<std::unique_ptr<GameObject>> gameObjects;
+    gameObjects.clear();
 
     gameObjects.push_back(std::make_unique<MusicPlayer>("../bin/music.mp3", gameLen, startTime));
 
+    // Livefish part
     gameObjects.push_back(std::make_unique<fish::Player>(
             "../bin/livefish/first/ship.png", 6, 2, 2, 3,
             "../bin/livefish/first/background.png",
             sf::seconds(22), sf::seconds(42)
     ));
+
+    for (int i = 0; i < 30; ++i) {
+        gameObjects.push_back(std::make_unique<fish::Asteroid>(
+                sf::Vector2f(200, 1400), sf::Vector2f(-16.f, 260.f),
+                sf::Vector2f(-0.3, 0.3), sf::Vector2f(-0.3, 0.1), sf::Vector2f(-0.05, 0.05),
+                sf::seconds(22), sf::seconds(42)
+        ));
+    }
 
     //Slava Part
     gameObjects.push_back(std::make_unique<slava::Player>(
@@ -52,6 +141,7 @@ int main() {
                 sf::Vector2f(-4, i)
         ));
     }
+
     for (int i = -4; i <= 4; i++) {
         gameObjects.push_back(std::make_unique<slava::FireBall>(
                 sf::seconds(44), sf::seconds(50),
@@ -60,59 +150,4 @@ int main() {
     }
 
     gameObjects.push_back(std::make_unique<TimeRenderer>("../bin/font.ttf", gameLen));
-
-    std::vector<std::unique_ptr<GameObject> *> toDelete;
-
-    while (window.isOpen()) {
-        defferedDelete(gameObjects, toDelete);
-
-        sf::Event event {};
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Q) {
-                window.close();
-            }
-            if (event.type == sf::Event::LostFocus) {
-                win.isActive = false;
-                win.gameClock.pause();
-            }
-            if (event.type == sf::Event::GainedFocus) {
-                win.isActive = true;
-                win.gameClock.resume();
-            }
-        }
-        window.clear();
-
-        for (auto & g : gameObjects) {
-            bool expired = g->tryTick(win);
-            if (expired) {
-                toDelete.push_back(&g);
-            }
-        }
-
-        for (auto & g : gameObjects) {
-            g->tryDraw(win);
-        }
-
-        window.display();
-    }
-
-    return 0;
-}
-
-void defferedDelete(std::vector<std::unique_ptr<GameObject>> & gameObjects,
-                    std::vector<std::unique_ptr<GameObject> *> & toDelete) {
-    auto firstToRemove = std::stable_partition(
-            gameObjects.begin(), gameObjects.end(),
-            [&toDelete](std::unique_ptr<GameObject> &g) {
-                return std::find(toDelete.begin(), toDelete.end(), &g) == toDelete.end();
-            }
-    );
-    std::for_each(firstToRemove, gameObjects.end(), [ ](std::unique_ptr<GameObject> &g) {
-        g.reset();
-    });
-    gameObjects.erase(firstToRemove, gameObjects.end());
-    toDelete.clear();
 }

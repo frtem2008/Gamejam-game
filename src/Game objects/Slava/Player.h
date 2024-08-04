@@ -24,7 +24,7 @@ namespace slava {
             shape.setSize(sf::Vector2f(10, 10));
         }
 
-        void tick(Window & win) override {
+        void tick(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) override {
            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
                 sprite.move(0, -8);
             }
@@ -67,7 +67,7 @@ namespace slava {
             enemy.setRadius(100);
         }
 
-        void tick(Window & win) override {
+        void tick(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) override {
         }
 
         void draw(Window & win) override {
@@ -88,7 +88,7 @@ namespace slava {
             shape.setRadius(50);
         }
 
-        void tick(Window & win) override {
+        void tick(Window & win, std::vector<std::unique_ptr<GameObject>> & gameObjects) override {
             shape.move(speed);
         }
 
