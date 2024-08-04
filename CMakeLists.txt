@@ -24,10 +24,7 @@ FetchContent_MakeAvailable(SFML)
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "src/*.cpp")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/out)
-add_executable(${PROJECT_NAME} ${SOURCES}
-        "src/Game objects/Slava/FireBall.h"
-        "src/Game objects/Slava/Boss.h"
-        "src/Game objects/Slava/Laser.h")
+add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_link_libraries(${PROJECT_NAME}
         PRIVATE sfml-graphics
