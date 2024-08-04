@@ -21,6 +21,11 @@ namespace slava {
             sprite.setTexture(texture);
 
 
+            shape.setPosition(120, 100);
+            shape.setFillColor(sf::Color::White);
+            shape.setSize(sf::Vector2f(10, 10));
+
+
         }
 
         void tick(Window &win) override {
@@ -41,19 +46,29 @@ namespace slava {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
                 sprite.move(-8, 0);
             }
+            if(!spriteBound.intersects(shapeBound)){
+
+                std::cout << "not colision"<<std::endl;
+            }else{
+                std::cout <<"colision"<< std::endl;
+            }
         }
 
 
         void draw(Window &win) override {
 
             win.win.draw(sprite);
+            win.win.draw(shape);
 
         }
         //переменные
-
-
         sf::Sprite sprite;
         sf::Texture texture;
+        sf::RectangleShape shape;
+
+        sf::FloatRect spriteBound = sprite.getGlobalBounds();
+        sf::FloatRect shapeBound = shape.getGlobalBounds();
+
 
 
     };
@@ -105,31 +120,10 @@ namespace slava {
         }
         sf::CircleShape shape;
     };
-    class Player_Attack : public GameObject {
-    public:
+
+};
 
 
-        float posx,posy;
-        Player_Attack(const sf::Time &startTime, const sf::Time &endTime,float x,float y)
-                : GameObject(startTime, endTime) {
-            posx = x;
-            posy = y;
-            shape.setPosition(posx, posy);//Фаерболл
-            shape.setFillColor(sf::Color::White);
-            shape.setRadius(50);
 
-
-        }
-
-        void tick(Window &win) override {
-
-        }
-        void draw(Window &win) override {
-            win.win.draw(shape);
-
-        }
-        sf::CircleShape shape;
-    };
-}
 
 #endif //GAMEJAMPROG_PLAYER_H
