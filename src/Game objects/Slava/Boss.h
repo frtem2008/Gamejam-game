@@ -5,11 +5,12 @@
 #ifndef GAMEJAMPROG_BOSS_H
 #define GAMEJAMPROG_BOSS_H
 #include "Game object.h"
+
 namespace slava {
     class Boss : public GameObject {
     public:
         Boss(const sf::Time & startTime, const sf::Time & endTime) : GameObject(startTime, endTime) {
-            enemy.setPosition(550, -100);//Фаерболл
+            enemy.setPosition(650, -100);//Фаерболл
             enemy.setFillColor(sf::Color::Green);
             enemy.setRadius(100);
         }
