@@ -120,19 +120,19 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
     // Livefish part
     gameObjects.push_back(std::make_unique<BasicPicture>(
             "../bin/livefish/first/background.png", sf::Vector2f(-20, 0),
-            sf::seconds(22), sf::seconds(42)
+            sf::seconds(22), sf::seconds(40)
     ));
 
     gameObjects.push_back(std::make_unique<fish::Player>(
             "../bin/livefish/first/ship.png", 6, 2, 2, 3,
-            sf::seconds(22), sf::seconds(42)
+            sf::seconds(22), sf::seconds(40)
     ));
 
     for (int i = 0; i < 23; ++i) {
         gameObjects.push_back(std::make_unique<fish::Asteroid>(
                 sf::Vector2f(200, 1150), sf::Vector2f(-16.f, 260.f),
                 sf::Vector2f(-0.3, 0.3), sf::Vector2f(-0.3, 0.1), sf::Vector2f(-0.05, 0.05),
-                sf::seconds(22), sf::seconds(42)
+                sf::seconds(22), sf::seconds(40)
         ));
     }
 
@@ -183,6 +183,6 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
 
     gameObjects.push_back(std::make_unique<FlashingRectangle>(
             sf::Vector2f(0, 0), sf::Vector2f(1920, 1080),
-            sf::Color::Black, sf::seconds(39), sf::seconds(6)
+            sf::Color::Black, sf::seconds(37), sf::seconds(6)
     ));
 }
