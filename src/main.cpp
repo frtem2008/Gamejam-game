@@ -7,6 +7,8 @@
 #include "drawing/AnimatedRectangle.h"
 #include "drawing/BasicText.h"
 
+#include "drawing/FlashingRectangle.h"
+
 #include "livefish/Asteroid.h"
 #include "livefish/Player.h"
 
@@ -104,7 +106,7 @@ void deferredDelete(gameObjectVec & gameObjects,
 }
 
 void startGame(Window & win, gameObjectVec & gameObjects) {
-    sf::Time startTime = sf::seconds(18);
+    sf::Time startTime = sf::seconds(20);
     const sf::Time gameLen = sf::seconds(202);
 
     win.gameClock.reset(true);
@@ -159,5 +161,21 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
                 return std::to_string(win.gameClock.getElapsedTime().asSeconds());
             },
             sf::Time::Zero, gameLen
+    ));
+
+    // fade translations
+    gameObjects.push_back(std::make_unique<FlashingRectangle>(
+            sf::Vector2f(0, 0), sf::Vector2f(1920, 1080),
+            sf::Color::Black, sf::seconds(21), sf::seconds(2)
+    ));
+
+    gameObjects.push_back(std::make_unique<FlashingRectangle>(
+            sf::Vector2f(0, 0), sf::Vector2f(1920, 1080),
+            sf::Color::Black, sf::seconds(32), sf::seconds(2)
+    ));
+
+    gameObjects.push_back(std::make_unique<FlashingRectangle>(
+            sf::Vector2f(0, 0), sf::Vector2f(1920, 1080),
+            sf::Color::Black, sf::seconds(39), sf::seconds(6)
     ));
 }

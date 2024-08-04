@@ -11,9 +11,6 @@ bool GameObject::available(const Window & win) const {
 
 bool GameObject::tryTick(Window & win, gameObjectVec &gameObjects) {
     bool avail = available(win);
-    if (avail) {
-        tick(win, gameObjects);
-    }
 
     if (avail && !shown) {
         shown = true;
@@ -24,6 +21,10 @@ bool GameObject::tryTick(Window & win, gameObjectVec &gameObjects) {
         shown = false;
         onHide(win);
         expired = true;
+    }
+
+    if (avail) {
+        tick(win, gameObjects);
     }
 
     return expired;

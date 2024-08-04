@@ -14,7 +14,7 @@ namespace fish {
                const sf::Time & startTime, const sf::Time & endTime)
                 : GameObject(startTime, endTime),
                   playerAnim(fps, playerTexPath, rows, columns, frameCount) {
-            player.setPosition(50, 135 - 16);
+            player.setPosition(100, 135 - 16);
         }
 
     public:
