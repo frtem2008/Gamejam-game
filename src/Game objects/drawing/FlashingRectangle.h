@@ -30,29 +30,35 @@ private:
     sf::RectangleShape shape;
     sf::Texture tex;
     sf::Time flashTime;
-    sf::Clock clock;
     bool isSprite = false;
 
-    void onShow(Window & win) override {
-        clock.restart();
-    }
 
     void tick(Window & win, gameObjectVec & gameObjects) override {
-        float k, sec = clock.getElapsedTime().asSeconds(), halfTime = flashTime.asSeconds() / 2;
-        if (sec < halfTime) {
-            k = sec / halfTime;
+        sf::Color color;
+        if (isSprite) {
+            color = sf::Color::White;
         } else {
-            k = (halfTime - sec) / halfTime;
+            color = shape.getFillColor();
+        }
+
+        sf::Time time = win.gameClock.getElapsedTime();
+        float halfLen = (endTime - startTime).asSeconds() / 2;
+        float timeSinceStart = (time - startTime).asSeconds();
+        float timeToEnd = (endTime - time).asSeconds();
+
+        color.a = 255;
+        if (timeSinceStart < halfLen) {
+            color.a *= timeSinceStart / halfLen;
+        } else {
+            color.a *= timeToEnd /
+                       halfLen;
         }
 
         if (isSprite) {
-            sprite.setColor(sf::Color(255, 255, 255, 255 * k));
+            sprite.setColor(color);
         } else {
-            sf::Color shapeColor = shape.getFillColor();
-            shapeColor.a = 255 * k;
-            shape.setFillColor(shapeColor);
+            shape.setFillColor(color);
         }
-
     }
 
     void draw(Window & win) override {
