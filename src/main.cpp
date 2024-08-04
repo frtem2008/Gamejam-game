@@ -6,11 +6,13 @@
 #include "Music player.h"
 #include "Time renderer.h"
 
-#include "livefish/First part/Player.h"
+#include "livefish/Player.h"
 
 #include "Slava/Player.h"
 
 int main() {
+    random_data.seed(std::time(nullptr));
+
     sf::RenderWindow window(
             sf::VideoMode(1422, 800),
             "Afterlife by livefish, Clown_sigma and Moyvaaaa",
@@ -20,7 +22,7 @@ int main() {
     window.setPosition({878, 83});
     window.setFramerateLimit(60);
 
-    sf::Time startTime = sf::seconds(42);
+    sf::Time startTime = sf::seconds(20);
     const sf::Time gameLen = sf::seconds(202);
 
     Window win(window);
