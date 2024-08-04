@@ -21,8 +21,9 @@ public:
 
     virtual ~GameObject() = default;
 
-private:
+protected:
     sf::Time startTime, endTime;
+private:
     bool shown = false, expired = false;
 
     [[nodiscard]] bool available(const Window & win) const;

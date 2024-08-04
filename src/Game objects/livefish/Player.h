@@ -25,6 +25,10 @@ namespace fish {
         Animation playerAnim;
 
     private:
+        void onHide(Window & win) override {
+            win.win.setView(win.win.getDefaultView());
+        }
+
         void tick(Window & win, gameObjectVec & gameObjects) override {
             updatePlayerAnim(win);
             movePlayer(win);
@@ -34,6 +38,66 @@ namespace fish {
                     win.restartOnNextFrame = true;
                 }
             }
+        }
+
+        void updatePlayerAnim(Window & win) {
+            playerAnim.update();
+            player.setTexture(*playerAnim.curFrame());
+        }
+
+        void movePlayer(Window & win) {
+            if (win.gameClock.getElapsedTime() > endTime - sf::seconds(3)) {
+                goStraight();
+            } else {
+                handleInput();
+            }
+            loopOnBoundaries();
+            moveAndRotate();
+        }
+
+        void goStraight() {
+            if (std::abs(velocity) < 0.1) {
+                velocity = 0;
+                acceleration = 0;
+            } else {
+                acceleration = std::copysign(0.05f, -velocity);
+            }
+        }
+
+        void handleInput() {
+            using kb = sf::Keyboard;
+            if (kb::isKeyPressed(kb::Space)) {
+                if (!wasSpacePressed) {
+                    if (acceleration == 0) {
+                        acceleration = 0.04;
+                    } else {
+                        acceleration = -acceleration;
+                    }
+                }
+                wasSpacePressed = true;
+            } else {
+                wasSpacePressed = false;
+            }
+        }
+
+        void loopOnBoundaries() {
+            if (player.getGlobalBounds().top + player.getGlobalBounds().height > 270 && velocity > 0) {
+                player.setPosition(player.getPosition().x, 0 - player.getGlobalBounds().height / 2);
+            }
+
+            if (player.getPosition().y < 0 && velocity < 0) {
+                player.setPosition(player.getPosition().x, 270);
+            }
+        }
+
+        void moveAndRotate() {
+            velocity = std::min(velocityMax, std::max(-velocityMax, velocity));
+
+            velocity += acceleration;
+            player.move({1, velocity});
+
+            player.setOrigin(16, 16);
+            player.setRotation(velocity * 50);
         }
 
         bool astrCollides(Window & win, std::unique_ptr<GameObject> & obj) {
@@ -57,52 +121,11 @@ namespace fish {
             win.win.draw(player);
         }
 
-        void onHide(Window & win) override {
-            win.win.setView(win.win.getDefaultView());
-        }
-
         void setView(Window & win) {
             auto view = win.win.getDefaultView();
             view.setCenter({player.getPosition().x + 100, 135});
             view.zoom(0.25);
             win.win.setView(view);
-        }
-
-        void movePlayer(Window & win) {
-            using kb = sf::Keyboard;
-            if (kb::isKeyPressed(kb::Space)) {
-                if (!wasSpacePressed) {
-                    if (acceleration == 0) {
-                        acceleration = 0.04;
-                    } else {
-                        acceleration = -acceleration;
-                    }
-                }
-                wasSpacePressed = true;
-            } else {
-                wasSpacePressed = false;
-            }
-
-            if (player.getGlobalBounds().top + player.getGlobalBounds().height > 270 && velocity > 0) {
-                player.setPosition(player.getPosition().x, 0 - player.getGlobalBounds().height / 2);
-            }
-
-            if (player.getPosition().y < 0 && velocity < 0) {
-                player.setPosition(player.getPosition().x, 270);
-            }
-
-            velocity = std::min(velocityMax, std::max(-velocityMax, velocity));
-
-            velocity += acceleration;
-            player.move({1, velocity});
-
-            player.setOrigin(16, 16);
-            player.setRotation(velocity * 50);
-        }
-
-        void updatePlayerAnim(Window & win) {
-            playerAnim.update();
-            player.setTexture(*playerAnim.curFrame());
         }
     };
 }

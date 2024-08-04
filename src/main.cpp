@@ -106,7 +106,7 @@ void deferredDelete(gameObjectVec & gameObjects,
 }
 
 void startGame(Window & win, gameObjectVec & gameObjects) {
-    sf::Time startTime = sf::seconds(42);
+    sf::Time startTime = sf::seconds(20);
     const sf::Time gameLen = sf::seconds(202);
 
     win.gameClock.reset(true);
@@ -127,9 +127,9 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
             sf::seconds(22), sf::seconds(42)
     ));
 
-    for (int i = 0; i < 30; ++i) {
+    for (int i = 0; i < 23; ++i) {
         gameObjects.push_back(std::make_unique<fish::Asteroid>(
-                sf::Vector2f(200, 1400), sf::Vector2f(-16.f, 260.f),
+                sf::Vector2f(200, 1150), sf::Vector2f(-16.f, 260.f),
                 sf::Vector2f(-0.3, 0.3), sf::Vector2f(-0.3, 0.1), sf::Vector2f(-0.05, 0.05),
                 sf::seconds(22), sf::seconds(42)
         ));
