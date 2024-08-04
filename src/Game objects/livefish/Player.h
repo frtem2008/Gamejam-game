@@ -30,7 +30,6 @@ namespace fish {
         void onHide(Window & win) override {
             win.win.setView(win.win.getDefaultView());
         }
-
         void tick(Window & win, gameObjectVec & gameObjects) override {
             updatePlayerAnim(win);
             movePlayer(win);

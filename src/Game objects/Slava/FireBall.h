@@ -6,9 +6,7 @@
 #define GAMEJAMPROG_FIREBALL_H
 
 #include "Game object.h"
-#include <iostream>
-#include <ctime>
-#include <list>
+
 namespace  slava{
     class FireBall : public GameObject {
     public:

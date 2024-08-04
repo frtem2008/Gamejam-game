@@ -5,9 +5,6 @@
 #ifndef GAMEJAMPROG_PLAYER_H
 #define GAMEJAMPROG_PLAYER_H
 
-#include <iostream>
-#include <ctime>
-#include <list>
 #include "FireBall.h"
 #include "Game object.h"
 #include "Laser.h"
@@ -17,23 +14,11 @@ namespace slava {
         Player(const sf::Time & startTime, const sf::Time & endTime) : GameObject(startTime, endTime) {
             left.loadFromFile("../bin/Slava/Player_flip.png");
             right.loadFromFile("../bin/Slava/Player.png");
-
             sprite.setPosition(50, 400);//Игрок
             sprite.setOrigin(16,16);
             sprite.setScale(1.5,1.5);
 
             sprite.setTexture(right);
-
-            livesFont.loadFromFile("../bin/font.ttf");
-            livesText.setFont(livesFont);
-            livesText.setStyle(sf::Text::Style::Underlined);
-            livesText.setCharacterSize(16);
-            livesText.setPosition(100, 0);
-
-            bgTexture.loadFromFile("../bin/Slava/Bg_Slava.png");
-            bg.setTexture(bgTexture);
-            bg.setPosition(0, 0);
-            bg.setScale(2,2);
         }
         void tick(Window & win, gameObjectVec & gameObjects) override {
            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sprite.getGlobalBounds().top > 0 ) {
@@ -57,12 +42,8 @@ namespace slava {
                 }
                 if (laserCollides(win, obj)) {
                     win.restartOnNextFrame = true;
-                    std::cout << "con"<< std::endl;
-                }else{
-                    std::cout<<"notcon"<<std::endl;
                 }
             }
-            livesText.setString("Lives: " + std::to_string(lives));
         }
         bool laserCollides(Window & win, std::unique_ptr<GameObject> & obj) {
             Laser * astr;
@@ -90,21 +71,12 @@ namespace slava {
             }
             return false;
         }
-
         void draw(Window & win) override {
-            win.win.draw(bg);
             win.win.draw(sprite);
         }
         //переменные
         sf::Sprite sprite;
         sf::Texture texture;
-
-        int lives = 3;
-        sf::Text livesText;
-        sf::Font livesFont;
-
-        sf::Texture bgTexture;
-        sf::Sprite bg;
         sf::Texture right, left;
     };
 };

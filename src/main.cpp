@@ -138,6 +138,10 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
     }
 
     //Slava Part
+    gameObjects.push_back(std::make_unique<BasicPicture>(
+            "../bin/Slava/Bg_Slava.png", sf::Vector2f(-20, 0),
+            sf::seconds(40), sf::seconds(65)
+    ));
     gameObjects.push_back(std::make_unique<slava::Player>(
             sf::seconds(40), sf::seconds(65)));
 

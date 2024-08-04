@@ -5,9 +5,6 @@
 #ifndef GAMEJAMPROG_LASER_H
 #define GAMEJAMPROG_LASER_H
 #include "Game object.h"
-#include <iostream>
-#include <ctime>
-#include <list>
 namespace slava{
     class Laser : public  GameObject{
     public:
