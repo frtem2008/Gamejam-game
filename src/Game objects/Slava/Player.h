@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <ctime>
-
+#include <list>
 #include "Game object.h"
 
 namespace slava {
@@ -62,37 +62,60 @@ namespace slava {
     public:
         bool i = false;
         Boss(const sf::Time &startTime, const sf::Time &endTime) : GameObject(startTime, endTime) {
-            enemy.setPosition(400, -100);//Фаерболл
+
+            enemy.setPosition(550, -100);//Фаерболл
             enemy.setFillColor(sf::Color::Green);
             enemy.setRadius(100);
-            shape.setPosition(1100, y);//Фаерболл
-            shape.setFillColor(sf::Color::Red);
-            shape.setRadius(50);
-        }
 
+
+
+        }
         void tick(Window &win) override {
             win.win.setFramerateLimit(60);//количество кадров в секунду
 
         }
-
-
         void draw(Window &win) override {
-            win.win.draw(shape);
+
             win.win.draw(enemy);
 
         }
-
-        sf::CircleShape shape;
         sf::CircleShape enemy;
-        float y = rand() % 800;
     };
     class FireBall : public GameObject {
     public:
-        FireBall(const sf::Time &startTime, const sf::Time &endTime,  const Player &player)
-                : GameObject(startTime, endTime), player(player) {
+        float tomovex ,tomovey;
 
-            shape.setPosition(450,0);//Фаерболл
+        int x = 0 ;
+        FireBall(const sf::Time &startTime, const sf::Time &endTime,float toMovex,float ToMovey)
+                : GameObject(startTime, endTime) {
+            shape.setPosition(600, 0);//Фаерболл
             shape.setFillColor(sf::Color::Red);
+            shape.setRadius(50);
+            tomovex = toMovex;
+            tomovey = ToMovey;
+
+        }
+
+        void tick(Window &win) override {
+            shape.move(tomovex,tomovey);
+        }
+        void draw(Window &win) override {
+            win.win.draw(shape);
+
+        }
+        sf::CircleShape shape;
+    };
+    class Player_Attack : public GameObject {
+    public:
+
+
+        float posx,posy;
+        Player_Attack(const sf::Time &startTime, const sf::Time &endTime,float x,float y)
+                : GameObject(startTime, endTime) {
+            posx = x;
+            posy = y;
+            shape.setPosition(posx, posy);//Фаерболл
+            shape.setFillColor(sf::Color::White);
             shape.setRadius(50);
 
 
@@ -100,20 +123,12 @@ namespace slava {
 
         void tick(Window &win) override {
 
-
         }
-
-
         void draw(Window &win) override {
             win.win.draw(shape);
+
         }
-        const Player &player;
-        float positionx = player.sprite.getPosition().x;
-        float positiony = player.sprite.getPosition().y;
-
         sf::CircleShape shape;
-
-
     };
 }
 
