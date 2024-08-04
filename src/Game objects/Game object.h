@@ -16,7 +16,7 @@ public:
 
     GameObject(const sf::Time & startTime, const sf::Time & endTime) : startTime(startTime), endTime(endTime) {}
 
-    virtual void tryTick(Window & win) final {
+    virtual bool tryTick(Window & win) final {
         bool avail = available(win);
         if (avail) {
             tick(win);
@@ -26,10 +26,14 @@ public:
             shown = true;
             onShow(win);
         }
+
         if (!avail && shown) {
             shown = false;
             onHide(win);
+            expired = true;
         }
+
+        return expired;
     };
 
     virtual void tryDraw(Window & win) final {
@@ -43,7 +47,7 @@ public:
 
 private:
     sf::Time startTime, endTime;
-    bool shown = false;
+    bool shown = false, expired = false;
 
     [[nodiscard]] bool available(const Window & win) const {
         return startTime <= win.gameClock.getElapsedTime() &&
@@ -51,6 +55,7 @@ private:
     };
 
     virtual void onShow(Window & win) {};
+
     virtual void onHide(Window & win) {};
 
     virtual void tick(Window & win) = 0;

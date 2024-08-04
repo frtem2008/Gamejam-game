@@ -21,7 +21,7 @@ namespace fish {
             bg.setTexture(bgTex);
             bg.setPosition(-20, 0);
 
-            asteroids.resize(20);
+            asteroids.resize(30);
             for (auto & asteroid : asteroids) {
                 randomAsteroid(asteroid);
             }
@@ -31,21 +31,6 @@ namespace fish {
             livesText.setStyle(sf::Text::Style::Underlined);
             livesText.setCharacterSize(16);
             livesText.setPosition(100, 0);
-        }
-
-        void moveAsteroids(Window & window) {
-            for (auto & a : asteroids) {
-                if (a.valid) {
-                    a.pos += a.speed;
-                    a.sprite.setPosition(a.pos);
-                    a.sprite.rotate(a.angVel);
-                    a.sprite.setOrigin(a.tex.getSize().x / 2, a.tex.getSize().y / 2);
-                }
-            }
-        }
-
-        static double dist(sf::Vector2f v1, sf::Vector2f v2) {
-            return sqrt(pow((v1.x - v2.x), 2) + pow((v1.y - v2.y), 2));
         }
 
         void tick(Window & win) override {
@@ -129,7 +114,7 @@ namespace fish {
             res.sprite.setTexture(res.tex);
             res.pos = {
                     std::uniform_real_distribution<float>(200, 1200)(random_data),
-                    std::uniform_real_distribution<float>(64, 270 - 64)(random_data)
+                    std::uniform_real_distribution<float>(-16, 260)(random_data)
             };
             res.angVel = std::uniform_real_distribution<float>(-0.3, 0.3)(random_data);
             res.speed = {
@@ -140,7 +125,6 @@ namespace fish {
 
         std::vector<Asteroid> asteroids;
 
-
     private:
         void setView(Window & win) {
             auto view = win.win.getDefaultView();
@@ -150,8 +134,8 @@ namespace fish {
         }
 
         void movePlayer(Window & win) {
-            using Key = sf::Keyboard::Key;
-            if (sf::Keyboard::isKeyPressed(Key::Space)) {
+            using kb = sf::Keyboard;
+            if (kb::isKeyPressed(kb::Space)) {
                 if (!wasSpacePressed) {
                     if (acceleration == 0) {
                         acceleration = 0.04;
@@ -162,6 +146,14 @@ namespace fish {
                 wasSpacePressed = true;
             } else {
                 wasSpacePressed = false;
+            }
+
+            if (player.getPosition().y + player.getGlobalBounds().height > 270 && velocity > 0) {
+                player.setPosition(player.getPosition().x, 0 - player.getGlobalBounds().height / 2);
+            }
+
+            if (player.getPosition().y < 0 && velocity < 0) {
+                player.setPosition(player.getPosition().x, 270);
             }
 
             velocity = std::min(velocityMax, std::max(-velocityMax, velocity));
@@ -176,6 +168,21 @@ namespace fish {
         void updatePlayerAnim(Window & win) {
             playerAnim.update();
             player.setTexture(*playerAnim.curFrame());
+        }
+
+        void moveAsteroids(Window & window) {
+            for (auto & a : asteroids) {
+                if (a.valid) {
+                    a.pos += a.speed;
+                    a.sprite.setPosition(a.pos);
+                    a.sprite.rotate(a.angVel);
+                    a.sprite.setOrigin(a.tex.getSize().x / 2, a.tex.getSize().y / 2);
+                }
+            }
+        }
+
+        static double dist(sf::Vector2f v1, sf::Vector2f v2) {
+            return sqrt(pow((v1.x - v2.x), 2) + pow((v1.y - v2.y), 2));
         }
     };
 }

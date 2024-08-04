@@ -12,6 +12,7 @@ public:
     explicit MusicPlayer(const std::string & path, sf::Time gameLen, sf::Time offset)
             : GameObject(sf::Time::Zero, gameLen) {
         music.openFromFile(path);
+        music.setVolume(10);
         music.play();
         music.setPlayingOffset(offset);
     }

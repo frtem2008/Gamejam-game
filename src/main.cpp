@@ -10,9 +10,10 @@
 
 #include "Slava/Player.h"
 
-int main() {
-    random_data.seed(std::time(nullptr));
+void defferedDelete(std::vector<std::unique_ptr<GameObject>> & gameObjects,
+                    std::vector<std::unique_ptr<GameObject> *> & toDelete);
 
+int main() {
     sf::RenderWindow window(
             sf::VideoMode(1422, 800),
             "Afterlife by livefish, Clown_sigma and Moyvaaaa",
@@ -37,47 +38,33 @@ int main() {
             "../bin/livefish/first/background.png",
             sf::seconds(22), sf::seconds(42)
     ));
+
     //Slava Part
-
-    gameObjects.push_back(std::make_unique<slava::Player>(sf::seconds(42), sf::seconds(65)));
-    gameObjects.push_back(std::make_unique<slava::Boss>(sf::seconds(42), sf::seconds(65)));
-
-
-    int x = 0;
+    gameObjects.push_back(std::make_unique<slava::Player>(
+            sf::seconds(42), sf::seconds(65)));
+    gameObjects.push_back(std::make_unique<slava::Boss>(
+            sf::seconds(42), sf::seconds(65)));
 
 
-
-
-
+    for (int i = 0; i < 5; i++) {
+        gameObjects.push_back(std::make_unique<slava::FireBall>(
+                sf::seconds(42), sf::seconds(45),
+                sf::Vector2f(-4, i)
+        ));
+    }
+    for (int i = -4; i <= 4; i++) {
+        gameObjects.push_back(std::make_unique<slava::FireBall>(
+                sf::seconds(44), sf::seconds(50),
+                sf::Vector2f(i, 4)
+        ));
+    }
 
     gameObjects.push_back(std::make_unique<TimeRenderer>("../bin/font.ttf", gameLen));
 
-    while (window.isOpen()) {
-        //attack
-        if (x == 0){
-            for(int i = 0 ;i < 5;i++){
-                gameObjects.push_back(std::make_unique<slava::FireBall>(sf::seconds(42), sf::seconds(65),-4,i));
-            }
-        }
-        if (x == 150){
-            for(int i = -4 ;i < 5;i++){
-                gameObjects.push_back(std::make_unique<slava::FireBall>(sf::seconds(42), sf::seconds(65),i,4));
-            }
-            x++;
-        }else{
-            x++;
-        }
-        if (x == 300){
-            for(int i =  0;i < 5;i++){
-                gameObjects.push_back(std::make_unique<slava::FireBall>(sf::seconds(42), sf::seconds(65),4,i));
-            }
-        }
-        if (x >= 450 and x < 600){
-            for(int i =  -10;i < 10;i++){
-                gameObjects.push_back(std::make_unique<slava::FireBall>(sf::seconds(42), sf::seconds(65),i,4));
-            }
-        }
+    std::vector<std::unique_ptr<GameObject> *> toDelete;
 
+    while (window.isOpen()) {
+        defferedDelete(gameObjects, toDelete);
 
         sf::Event event {};
         while (window.pollEvent(event)) {
@@ -99,7 +86,10 @@ int main() {
         window.clear();
 
         for (auto & g : gameObjects) {
-            g->tryTick(win);
+            bool expired = g->tryTick(win);
+            if (expired) {
+                toDelete.push_back(&g);
+            }
         }
 
         for (auto & g : gameObjects) {
@@ -107,8 +97,22 @@ int main() {
         }
 
         window.display();
-
     }
 
     return 0;
+}
+
+void defferedDelete(std::vector<std::unique_ptr<GameObject>> & gameObjects,
+                    std::vector<std::unique_ptr<GameObject> *> & toDelete) {
+    auto firstToRemove = std::stable_partition(
+            gameObjects.begin(), gameObjects.end(),
+            [&toDelete](std::unique_ptr<GameObject> &g) {
+                return std::find(toDelete.begin(), toDelete.end(), &g) == toDelete.end();
+            }
+    );
+    std::for_each(firstToRemove, gameObjects.end(), [ ](std::unique_ptr<GameObject> &g) {
+        g.reset();
+    });
+    gameObjects.erase(firstToRemove, gameObjects.end());
+    toDelete.clear();
 }
