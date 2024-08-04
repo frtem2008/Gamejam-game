@@ -1,10 +1,7 @@
 #include "external/Chronometer.h"
 
 #include "Window.h"
-
-#include "Test rect.h"
 #include "Music player.h"
-#include "Time renderer.h"
 
 #include "drawing/BasicPicture.h"
 #include "drawing/AnimatedRectangle.h"
