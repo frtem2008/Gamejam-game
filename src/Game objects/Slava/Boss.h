@@ -10,7 +10,7 @@ namespace slava {
     class Boss : public GameObject {
     public:
         Boss(const sf::Time & startTime, const sf::Time & endTime) : GameObject(startTime, endTime) {
-            enemy.setPosition(650, -100);//Фаерболл
+            enemy.setPosition(610, -100);//Фаерболл
             enemy.setFillColor(sf::Color::Green);
             enemy.setRadius(100);
         }

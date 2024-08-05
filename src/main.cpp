@@ -107,8 +107,9 @@ void deferredDelete(gameObjectVec & gameObjects,
     toDelete.clear();
 }
 
+
 void startGame(Window & win, gameObjectVec & gameObjects) {
-    sf::Time startTime = sf::seconds(20);
+    sf::Time startTime = sf::seconds(42);
     const sf::Time gameLen = sf::seconds(202);
 
     win.gameClock.reset(true);
@@ -147,30 +148,59 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
 
     for (int i = 0; i < 5; i++) {
         gameObjects.push_back(std::make_unique<slava::FireBall>(
-                sf::seconds(42), sf::seconds(45),
+                sf::seconds(43), sf::seconds(47),
                 sf::Vector2f(-4, i))
         );
     }
-
     for (int i = -4; i <= 4; i++) {
         gameObjects.push_back(std::make_unique<slava::FireBall>(
                 sf::seconds(44), sf::seconds(50),
                 sf::Vector2f(i, 4)));
     }
-    int x = 0;
+
+
     for (int i = 0; i <= 4; i++) {
         gameObjects.push_back(std::make_unique<slava::FireBall>(
-                sf::seconds(48), sf::seconds(53),
+                sf::seconds(46), sf::seconds(53),
                 sf::Vector2f(4, i)));
     }
+    int y = 0;
+    for (int i = 0; i < 2; i++) {
 
-    for (int i = 0; i < 3; i++) {
         gameObjects.push_back(std::make_unique<slava::Laser>(
-                sf::seconds(52), sf::seconds(58), x));
-        x += 300;
+                sf::seconds(40), sf::seconds(48),1422,0+y,sf::Vector2f (-9,0)));
+        y+=500;
     }
+    int x = 0;
+    for (int i = 0; i < 2; i++) {
+
+        gameObjects.push_back(std::make_unique<slava::Laser>(
+                sf::seconds(48), sf::seconds(53),400 + x,-300,sf::Vector2f (0,10)));
+        x+=1000;
+    }
+    for (int i = -4; i <= 4; i++) {
+        gameObjects.push_back(std::make_unique<slava::FireBall>(
+                sf::seconds(48), sf::seconds(53),
+                sf::Vector2f(i, 4)));
+    }
+    int x2 = 0;
+    for (int i = 0; i < 2; i++) {
+
+        gameObjects.push_back(std::make_unique<slava::Laser>(
+                sf::seconds(48), sf::seconds(53),400 + x2,-300,sf::Vector2f (0,10)));
+        x2+=1000;
+    }
+    gameObjects.push_back(std::make_unique<BasicText>(
+            "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White, sf::Vector2f(610, 200),
+            [ ](Window & win, gameObjectVec & gameObjects) -> std::string {
+                return "I'm tired of you.";
+            },
+            sf::seconds(51), sf::seconds(53)
+    ));
     gameObjects.push_back(std::make_unique<slava::Boss>(
             sf::seconds(40), sf::seconds(65)));
+
+
 
 
     gameObjects.push_back(std::make_unique<BasicText>(

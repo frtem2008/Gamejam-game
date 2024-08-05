@@ -40,24 +40,16 @@ namespace slava {
                 if (astrCollides(win, obj)) {
                     win.restartOnNextFrame = true;
                 }
-                if (laserCollides(win, obj)) {
+                if (lasCollides(win, obj)) {
                     win.restartOnNextFrame = true;
                 }
-            }
-        }
-        bool laserCollides(Window & win, std::unique_ptr<GameObject> & obj) {
-            Laser * astr;
-            if ((astr = dynamic_cast<Laser *>(obj.get()))) {
-                sf::Vector2f playerCenter =
-                        sprite.getGlobalBounds().getPosition() + sprite.getOrigin() / 2.f;
-                float playerRadius = sprite.getGlobalBounds().height / 2;
 
-                if (astr->onScreen(win) && astr->distance(playerCenter) * 1.5 <= astr->radius() + playerRadius) {
-                    return true;
-                }
+
+
+
             }
-            return false;
         }
+
         bool astrCollides(Window & win, std::unique_ptr<GameObject> & obj) {
             FireBall * astr;
             if ((astr = dynamic_cast<FireBall *>(obj.get()))) {
@@ -71,6 +63,17 @@ namespace slava {
             }
             return false;
         }
+        bool lasCollides(Window & win, std::unique_ptr<GameObject> & obj) {
+            Laser * astr;
+            if ((astr = dynamic_cast<Laser *>(obj.get()))) {
+                if ( astr->line.getGlobalBounds().intersects(sprite.getGlobalBounds())) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
         void draw(Window & win) override {
             win.win.draw(sprite);
         }
