@@ -168,7 +168,6 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
     gameObjects.push_back(std::make_unique<slava::Boss>(
             sf::seconds(40), sf::seconds(65)));
 
-
     gameObjects.push_back(std::make_unique<BasicText>(
             "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White, sf::Vector2f(0, 0),
             [ ](Window & win, gameObjectVec & gameObjects) -> std::string {
@@ -180,16 +179,16 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
     // fade translations
     gameObjects.push_back(std::make_unique<FlashingRectangle>(
             sf::Vector2f(0, 0), sf::Vector2f(1920, 1080),
-            sf::Color::Black, sf::seconds(21), sf::seconds(2)
+            sf::Color::Black, sf::seconds(21), sf::seconds(0.8), sf::seconds(0.2), sf::seconds(1)
     ));
 
     gameObjects.push_back(std::make_unique<FlashingRectangle>(
             sf::Vector2f(0, 0), sf::Vector2f(1920, 1080),
-            sf::Color::Black, sf::seconds(32), sf::seconds(2)
+            sf::Color::Black, sf::seconds(32), sf::seconds(0.8), sf::seconds(0.4), sf::seconds(0.8)
     ));
 
     gameObjects.push_back(std::make_unique<FlashingRectangle>(
             sf::Vector2f(0, 0), sf::Vector2f(1920, 1080),
-            sf::Color::Black, sf::seconds(37), sf::seconds(6)
+            sf::Color::Black, sf::seconds(39), sf::seconds(1), sf::seconds(0.7), sf::seconds(0.8)
     ));
 }
