@@ -15,7 +15,44 @@ namespace slava {
             enemy.setRadius(100);
         }
         void tick(Window & win, gameObjectVec & gameObjects) override {
+            if (endTime - win.gameClock.getElapsedTime() < sf::seconds(13) && endTime - win.gameClock.getElapsedTime() >= sf::seconds(12)) {
+                enemy.move(0, -5);
+            }
+            if(enemy.getPosition().y < -250){
+                enemy.setPosition(1422,600);
+            }
+            if (endTime - win.gameClock.getElapsedTime() < sf::seconds(12)&& endTime - win.gameClock.getElapsedTime() >= sf::seconds(10))  {
+                enemy.move(-25,0);
+            }
+            if(enemy.getPosition().x < -200){
+                enemy.setPosition(-200,200);
+            }
+            if (endTime - win.gameClock.getElapsedTime() < sf::seconds(10) && endTime - win.gameClock.getElapsedTime() >= sf::seconds(8.9)) {
+                enemy.move(25,0);
+            }
 
+            if(enemy.getPosition().x > 1500){
+                enemy.setPosition(610,-100);
+            }
+            if (endTime - win.gameClock.getElapsedTime() < sf::seconds(6) && endTime - win.gameClock.getElapsedTime() >= sf::seconds(0)) {
+                enemy.move(0, -5);
+            }
+        }
+        bool onScreen(Window & win) {
+            auto view = win.win.getView();
+            auto center = view.getCenter();
+            auto size = view.getSize();
+
+            return enemy.getGlobalBounds().intersects(
+                    sf::FloatRect(center - size / 2.f, size)
+            );
+        }
+        float distance(sf::Vector2f pos2) {
+            sf::Vector2f pos = enemy.getGlobalBounds().getPosition() + enemy.getOrigin() / 2.f;
+            return sqrtf((pos.x - pos2.x) * (pos.x - pos2.x) + (pos.y - pos2.y) * (pos.y - pos2.y));
+        }
+        float radius() {
+            return enemy.getGlobalBounds().height / 2;
         }
 
         void draw(Window & win) override {
@@ -23,23 +60,8 @@ namespace slava {
         }
 
         sf::CircleShape enemy;
+        int x = 1;
     };
-    class Boss2 : public GameObject {
-    public:
-        Boss2(const sf::Time & startTime, const sf::Time & endTime) : GameObject(startTime, endTime) {
-            enemy.setPosition(610, -100);//Фаерболл
-            enemy.setFillColor(sf::Color::Green);
-            enemy.setRadius(100);
-        }
-        void tick(Window & win, gameObjectVec & gameObjects) override {
-                enemy.move(0,-1);
-        }
 
-        void draw(Window & win) override {
-            win.win.draw(enemy);
-        }
-
-        sf::CircleShape enemy;
-    };
 }
 #endif //GAMEJAMPROG_BOSS_H

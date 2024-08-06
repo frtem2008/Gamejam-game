@@ -15,6 +15,7 @@
 #include "Slava/Player.h"
 #include "Slava/Boss.h"
 #include "Slava/Wall.h"
+#include "Slava/End.h"
 
 template<>
     int randomValue<int>(sf::Vector2i interval) {
@@ -187,23 +188,36 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
     for (int i = 0; i < 2; i++) {
         gameObjects.push_back(std::make_unique<slava::Mark>(
                 sf::seconds(47), sf::seconds(49),150 + x2,400));
-
         gameObjects.push_back(std::make_unique<slava::Wall>(
                 sf::seconds(48), sf::seconds(53),400 + x2,-300,sf::Vector2f (0,10)));
 
         x2+=1000;
+    }
+    int x3 = -100;
+    float x4 = 8;
+    for (int i = 0;i <2;i++){
+        gameObjects.push_back(std::make_unique<slava::End>(
+                sf::seconds(64), sf::seconds(65),x3,sf::Vector2f(x4,0)));
+        x4 = -8;
+        x3 = 1300;
     }
     gameObjects.push_back(std::make_unique<BasicText>(
             "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White, sf::Vector2f(610, 200),
             [ ](Window & win, gameObjectVec & gameObjects) -> std::string {
                 return "I'm tired of you.";
             },
-            sf::seconds(51), sf::seconds(53)
+            sf::seconds(50), sf::seconds(52)
+    ));
+    gameObjects.push_back(std::make_unique<BasicText>(
+            "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White, sf::Vector2f(610, 200),
+            [ ](Window & win, gameObjectVec & gameObjects) -> std::string {
+                return "Okay, let's finish this";
+            },
+            sf::seconds(59), sf::seconds(62)
     ));
     gameObjects.push_back(std::make_unique<slava::Boss>(
-            sf::seconds(40), sf::seconds(53)));
-    gameObjects.push_back(std::make_unique<slava::Boss2>(
-            sf::seconds(53), sf::seconds(55)));
+            sf::seconds(40), sf::seconds(65)));
+
 
 
 

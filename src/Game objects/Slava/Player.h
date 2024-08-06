@@ -8,6 +8,8 @@
 #include "FireBall.h"
 #include "Game object.h"
 #include "Wall.h"
+#include "Boss.h"
+#include "End.h"
 namespace slava {
     class Player : public GameObject {
     public:
@@ -24,18 +26,20 @@ namespace slava {
            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sprite.getGlobalBounds().top > 0 ) {
                 sprite.move(0, -8);
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sprite.getPosition().y < 800) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sprite.getPosition().y < 800  ) {
                 sprite.move(0, 8);
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && sprite.getPosition().x < 1422) {
+
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && sprite.getPosition().x < 1422 ) {
                 sprite.move(8, 0);
                 sprite.setTexture(right);
             }
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sprite.getGlobalBounds().left >0) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sprite.getGlobalBounds().left > 0 ){
                 sprite.move(-8, 0);
                 sprite.setTexture(left);
             }
+
             for (auto & obj : gameObjects) {
                 if (astrCollides(win, obj)) {
                     win.restartOnNextFrame = true;
@@ -43,9 +47,9 @@ namespace slava {
                 if (lasCollides(win, obj)) {
                     win.restartOnNextFrame = true;
                 }
-
-
-
+                if (bossCollides(win, obj)) {
+                    win.restartOnNextFrame = true;
+                }
 
             }
         }
@@ -53,6 +57,19 @@ namespace slava {
         bool astrCollides(Window & win, std::unique_ptr<GameObject> & obj) {
             FireBall * astr;
             if ((astr = dynamic_cast<FireBall *>(obj.get()))) {
+                sf::Vector2f playerCenter =
+                        sprite.getGlobalBounds().getPosition() + sprite.getOrigin() / 2.f;
+                float playerRadius = sprite.getGlobalBounds().height / 2;
+
+                if (astr->onScreen(win) && astr->distance(playerCenter) * 1.5 <= astr->radius() + playerRadius) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        bool bossCollides(Window & win, std::unique_ptr<GameObject> & obj) {
+            Boss * astr;
+            if ((astr = dynamic_cast<Boss *>(obj.get()))) {
                 sf::Vector2f playerCenter =
                         sprite.getGlobalBounds().getPosition() + sprite.getOrigin() / 2.f;
                 float playerRadius = sprite.getGlobalBounds().height / 2;
@@ -74,6 +91,8 @@ namespace slava {
         }
 
 
+
+
         void draw(Window & win) override {
             win.win.draw(sprite);
         }
@@ -81,6 +100,7 @@ namespace slava {
         sf::Sprite sprite;
         sf::Texture texture;
         sf::Texture right, left;
+
     };
 };
 
