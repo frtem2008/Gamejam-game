@@ -47,11 +47,11 @@ namespace fish {
         }
 
         void movePlayer(Window & win) {
-            if (win.gameClock.getElapsedTime() < endTime - sf::seconds(3)) {
+            if (win.gameClock.getElapsedTime() < endTime - sf::seconds(2)) {
                 handleInput();
             } else {
                 goStraight();
-                if (win.gameClock.getElapsedTime() > endTime - sf::seconds(0.9)) {
+                if (win.gameClock.getElapsedTime() > endTime - sf::seconds(1)) {
                     accelerationX = 0.1;
                 }
             }
