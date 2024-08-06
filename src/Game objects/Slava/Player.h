@@ -7,7 +7,7 @@
 
 #include "FireBall.h"
 #include "Game object.h"
-#include "Laser.h"
+#include "Wall.h"
 namespace slava {
     class Player : public GameObject {
     public:
@@ -64,8 +64,8 @@ namespace slava {
             return false;
         }
         bool lasCollides(Window & win, std::unique_ptr<GameObject> & obj) {
-            Laser * astr;
-            if ((astr = dynamic_cast<Laser *>(obj.get()))) {
+            Wall * astr;
+            if ((astr = dynamic_cast<Wall *>(obj.get()))) {
                 if ( astr->line.getGlobalBounds().intersects(sprite.getGlobalBounds())) {
                     return true;
                 }

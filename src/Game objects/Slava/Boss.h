@@ -14,8 +14,25 @@ namespace slava {
             enemy.setFillColor(sf::Color::Green);
             enemy.setRadius(100);
         }
-
         void tick(Window & win, gameObjectVec & gameObjects) override {
+
+        }
+
+        void draw(Window & win) override {
+            win.win.draw(enemy);
+        }
+
+        sf::CircleShape enemy;
+    };
+    class Boss2 : public GameObject {
+    public:
+        Boss2(const sf::Time & startTime, const sf::Time & endTime) : GameObject(startTime, endTime) {
+            enemy.setPosition(610, -100);//Фаерболл
+            enemy.setFillColor(sf::Color::Green);
+            enemy.setRadius(100);
+        }
+        void tick(Window & win, gameObjectVec & gameObjects) override {
+                enemy.move(0,-1);
         }
 
         void draw(Window & win) override {

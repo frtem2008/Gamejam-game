@@ -14,7 +14,7 @@
 
 #include "Slava/Player.h"
 #include "Slava/Boss.h"
-#include "Slava/Laser.h"
+#include "Slava/Wall.h"
 
 template<>
     int randomValue<int>(sf::Vector2i interval) {
@@ -167,14 +167,14 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
     int y = 0;
     for (int i = 0; i < 2; i++) {
 
-        gameObjects.push_back(std::make_unique<slava::Laser>(
+        gameObjects.push_back(std::make_unique<slava::Wall>(
                 sf::seconds(40), sf::seconds(48),1422,0+y,sf::Vector2f (-9,0)));
         y+=500;
     }
     int x = 0;
     for (int i = 0; i < 2; i++) {
 
-        gameObjects.push_back(std::make_unique<slava::Laser>(
+        gameObjects.push_back(std::make_unique<slava::Wall>(
                 sf::seconds(48), sf::seconds(53),400 + x,-300,sf::Vector2f (0,10)));
         x+=1000;
     }
@@ -185,9 +185,12 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
     }
     int x2 = 0;
     for (int i = 0; i < 2; i++) {
+        gameObjects.push_back(std::make_unique<slava::Mark>(
+                sf::seconds(47), sf::seconds(49),150 + x2,400));
 
-        gameObjects.push_back(std::make_unique<slava::Laser>(
+        gameObjects.push_back(std::make_unique<slava::Wall>(
                 sf::seconds(48), sf::seconds(53),400 + x2,-300,sf::Vector2f (0,10)));
+
         x2+=1000;
     }
     gameObjects.push_back(std::make_unique<BasicText>(
@@ -198,7 +201,9 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
             sf::seconds(51), sf::seconds(53)
     ));
     gameObjects.push_back(std::make_unique<slava::Boss>(
-            sf::seconds(40), sf::seconds(65)));
+            sf::seconds(40), sf::seconds(53)));
+    gameObjects.push_back(std::make_unique<slava::Boss2>(
+            sf::seconds(53), sf::seconds(55)));
 
 
 
