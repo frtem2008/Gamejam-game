@@ -10,8 +10,7 @@ namespace slava {
     class Boss : public GameObject {
     public:
         Boss(const sf::Time & startTime, const sf::Time & endTime) : GameObject(startTime, endTime) {
-            enemy.setPosition(610, -50);//Фаерболл
-
+            enemy.setPosition(610, -50);
             texSprite.loadFromFile("../bin/Slava/Boss.png");
             texSpriteFlip.loadFromFile("../bin/Slava/Boss_flip.png");
             enemy.setTexture(texSprite);
@@ -50,15 +49,13 @@ namespace slava {
         float radius() {
             return enemy.getGlobalBounds().height / 2;
         }
-
         void draw(Window & win) override {
             win.win.draw(enemy);
         }
-
         sf::Sprite enemy;
         sf::Texture texSprite;
         sf::Texture texSpriteFlip;
-        int x = 1;
+
     };
 
 }
