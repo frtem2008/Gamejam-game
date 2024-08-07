@@ -17,7 +17,7 @@ namespace  slava{
                 : GameObject(startTime, endTime), speed(speed){
 
             sprite.setPosition(630, 50);//Игрок
-            texture.loadFromFile("../bin/livefish/first/asteroids/medium.png");
+            texture.loadFromFile("../bin/Slava/Boll.png");
             sprite.setTexture(texture);
         }
         void tick(Window & win, gameObjectVec & gameObjects) override {

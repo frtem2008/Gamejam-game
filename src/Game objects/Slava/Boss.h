@@ -10,9 +10,13 @@ namespace slava {
     class Boss : public GameObject {
     public:
         Boss(const sf::Time & startTime, const sf::Time & endTime) : GameObject(startTime, endTime) {
-            enemy.setPosition(610, -100);//Фаерболл
-            enemy.setFillColor(sf::Color::Green);
-            enemy.setRadius(100);
+            enemy.setPosition(610, -50);//Фаерболл
+
+            texSprite.loadFromFile("../bin/Slava/Boss.png");
+            texSpriteFlip.loadFromFile("../bin/Slava/Boss_flip.png");
+            enemy.setTexture(texSprite);
+            enemy.setScale(10,10);
+
         }
         void tick(Window & win, gameObjectVec & gameObjects) override {
             if (endTime - win.gameClock.getElapsedTime() < sf::seconds(13) && endTime - win.gameClock.getElapsedTime() >= sf::seconds(12)) {
@@ -24,28 +28,20 @@ namespace slava {
             if (endTime - win.gameClock.getElapsedTime() < sf::seconds(12)&& endTime - win.gameClock.getElapsedTime() >= sf::seconds(10))  {
                 enemy.move(-25,0);
             }
-            if(enemy.getPosition().x < -200){
-                enemy.setPosition(-200,200);
+            if(enemy.getPosition().x < -250){
+                enemy.setPosition(-250,200);
             }
             if (endTime - win.gameClock.getElapsedTime() < sf::seconds(10) && endTime - win.gameClock.getElapsedTime() >= sf::seconds(8.9)) {
+                enemy.setTexture(texSpriteFlip);
                 enemy.move(25,0);
             }
 
-            if(enemy.getPosition().x > 1500){
-                enemy.setPosition(610,-100);
+            if(enemy.getPosition().x > 1423){
+                enemy.setPosition(610,-50);
             }
             if (endTime - win.gameClock.getElapsedTime() < sf::seconds(6) && endTime - win.gameClock.getElapsedTime() >= sf::seconds(0)) {
                 enemy.move(0, -5);
             }
-        }
-        bool onScreen(Window & win) {
-            auto view = win.win.getView();
-            auto center = view.getCenter();
-            auto size = view.getSize();
-
-            return enemy.getGlobalBounds().intersects(
-                    sf::FloatRect(center - size / 2.f, size)
-            );
         }
         float distance(sf::Vector2f pos2) {
             sf::Vector2f pos = enemy.getGlobalBounds().getPosition() + enemy.getOrigin() / 2.f;
@@ -59,7 +55,9 @@ namespace slava {
             win.win.draw(enemy);
         }
 
-        sf::CircleShape enemy;
+        sf::Sprite enemy;
+        sf::Texture texSprite;
+        sf::Texture texSpriteFlip;
         int x = 1;
     };
 

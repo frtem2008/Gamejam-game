@@ -194,11 +194,11 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
         x2+=1000;
     }
     int x3 = -100;
-    float x4 = 8;
+    float x4 = 9;
     for (int i = 0;i <2;i++){
         gameObjects.push_back(std::make_unique<slava::End>(
                 sf::seconds(64), sf::seconds(65),x3,sf::Vector2f(x4,0)));
-        x4 = -8;
+        x4 = -9;
         x3 = 1300;
     }
     gameObjects.push_back(std::make_unique<BasicText>(

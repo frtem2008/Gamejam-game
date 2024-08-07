@@ -70,11 +70,7 @@ namespace slava {
         bool bossCollides(Window & win, std::unique_ptr<GameObject> & obj) {
             Boss * astr;
             if ((astr = dynamic_cast<Boss *>(obj.get()))) {
-                sf::Vector2f playerCenter =
-                        sprite.getGlobalBounds().getPosition() + sprite.getOrigin() / 2.f;
-                float playerRadius = sprite.getGlobalBounds().height / 2;
-
-                if (astr->onScreen(win) && astr->distance(playerCenter) * 1.5 <= astr->radius() + playerRadius) {
+                if ( astr->enemy.getGlobalBounds().intersects(sprite.getGlobalBounds())) {
                     return true;
                 }
             }
