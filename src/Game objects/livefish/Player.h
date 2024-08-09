@@ -30,6 +30,7 @@ namespace fish {
         void onHide(Window & win) override {
             win.win.setView(win.win.getDefaultView());
         }
+
         void tick(Window & win, gameObjectVec & gameObjects) override {
             updatePlayerAnim(win);
             movePlayer(win);
@@ -108,19 +109,9 @@ namespace fish {
         }
 
         bool astrCollides(Window & win, std::unique_ptr<GameObject> & obj) {
-            Asteroid * astr;
-
-            if ((astr = dynamic_cast<Asteroid *>(obj.get()))) {
-                sf::Vector2f playerCenter =
-                        player.getGlobalBounds().getPosition() + player.getOrigin() / 2.f;
-                float playerRadius = player.getGlobalBounds().height / 2;
-
-                if (astr->onScreen(win) && astr->distance(playerCenter) * 1.5 <= astr->radius() + playerRadius) {
-                    return true;
-                }
-            }
-
-            return false;
+            bool collided = false;
+            onCollide<Asteroid>(win, player, obj, [&collided]() { collided = true; });
+            return collided;
         }
 
         void draw(Window & win) override {

@@ -38,5 +38,4 @@ private:
 
 using gameObjectVec = std::vector<std::unique_ptr<GameObject>>;
 
-
 #endif //GAMEJAMPROG_GAME_OBJECT_H
