@@ -6,6 +6,7 @@
 #define GAMEJAMPROG_ROUNDOBJECT_H
 
 #include "Game object.h"
+#include "Window.h"
 
 class RoundObject {
 public:

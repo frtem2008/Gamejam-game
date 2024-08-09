@@ -8,43 +8,54 @@
 #include "Game object.h"
 
 namespace slava {
-    class Boss : public GameObject, public RoundObject {
+    class Boss : public GameObject {
     public:
         Boss(const sf::Time & startTime, const sf::Time & endTime)
-                : GameObject(startTime, endTime), RoundObject(sprite) {
-            sprite.setPosition(610, -50);
+                : GameObject(startTime, endTime) {
             texSprite.loadFromFile("../bin/Slava/Boss.png");
-            texSpriteFlip.loadFromFile("../bin/Slava/Boss_flip.png");
             sprite.setTexture(texSprite);
+
+            sprite.setOrigin(12, 10);
             sprite.setScale(10, 10);
+
+            sprite.setPosition(660, -100);
         }
 
+        sf::Sprite sprite;
+
+    private:
         void tick(Window & win, gameObjectVec & gameObjects) override {
-            float remainingLifetime = (endTime - win.gameClock.getElapsedTime()).asSeconds();
-            if (12 <= remainingLifetime && remainingLifetime < 13) {
-                std::cout << "1\n";
+            float sinceStart = (win.gameClock.getElapsedTime() - startTime).asSeconds();
+            sf::Vector2f corner = sprite.getPosition() - sprite.getOrigin() * sprite.getScale().y;
+
+            if (isTimeIn(2, sinceStart, 2.5)) {
+                sprite.move(0, 8);
+            }
+
+            if (isTimeIn(12, sinceStart, 13)) {
                 sprite.move(0, -5);
             }
-            if (sprite.getPosition().y < -250) {
-                sprite.setPosition(1422, 600);
+            if (corner.y < -250 && sinceStart > 3) {
+                sprite.setPosition(1582, 760);
             }
-            if (10 <= remainingLifetime && remainingLifetime < 12) {
-                std::cout << "2\n";
+
+            if (isTimeIn(13, sinceStart, 15)) {
                 sprite.move(-25, 0);
             }
-            if (sprite.getPosition().x < -250) {
-                sprite.setPosition(-250, 200);
+            if (corner.x < -250) {
+                sprite.setPosition(-110, 360);
             }
-            if (8.9 <= remainingLifetime && remainingLifetime < 10) {
-                std::cout << "3\n";
-                sprite.setTexture(texSpriteFlip);
+
+            if (isTimeIn(15, sinceStart, 16.1)) {
+                sprite.setScale(-10, 10);
                 sprite.move(25, 0);
             }
-            if (sprite.getPosition().x > 1423) {
-                sprite.setPosition(610, -50);
+            if (corner.x > 1423) {
+                sprite.setScale(10, 10);
+                sprite.setPosition(770, 90);
             }
-            if (0 <= remainingLifetime && remainingLifetime <= 6) {
-                std::cout << "4\n";
+
+            if (isTimeIn(19, sinceStart, 25)) {
                 sprite.move(0, -5);
             }
         }
@@ -53,11 +64,7 @@ namespace slava {
             win.win.draw(sprite);
         }
 
-        sf::Sprite sprite;
         sf::Texture texSprite;
-        sf::Texture texSpriteFlip;
-
     };
-
 }
 #endif //GAMEJAMPROG_BOSS_H

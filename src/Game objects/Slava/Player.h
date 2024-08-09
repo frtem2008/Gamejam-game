@@ -15,12 +15,10 @@ namespace slava {
     class Player : public GameObject {
     public:
         Player(const sf::Time & startTime, const sf::Time & endTime) : GameObject(startTime, endTime) {
-            left.loadFromFile("../bin/Slava/Player_flip.png");
             right.loadFromFile("../bin/Slava/Player.png");
             sprite.setPosition(50, 400);//Игрок
             sprite.setOrigin(16, 16);
             sprite.setScale(1.5, 1.5);
-
             sprite.setTexture(right);
         }
 
@@ -34,12 +32,12 @@ namespace slava {
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && sprite.getPosition().x < 1422) {
                 sprite.move(8, 0);
-                sprite.setTexture(right);
+                sprite.setScale(1.5, 1.5);
             }
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sprite.getGlobalBounds().left > 0) {
                 sprite.move(-8, 0);
-                sprite.setTexture(left);
+                sprite.setScale(-1.5, 1.5);
             }
 
             for (auto & obj : gameObjects) {
@@ -55,7 +53,7 @@ namespace slava {
 
         sf::Sprite sprite;
         sf::Texture texture;
-        sf::Texture right, left;
+        sf::Texture right;
     };
 };
 

@@ -4,7 +4,6 @@
 #include "Music player.h"
 
 #include "drawing/BasicPicture.h"
-#include "drawing/AnimatedRectangle.h"
 #include "drawing/BasicText.h"
 
 #include "drawing/FlashingRectangle.h"
@@ -110,7 +109,7 @@ void deferredDelete(gameObjectVec & gameObjects,
 
 
 void startGame(Window & win, gameObjectVec & gameObjects) {
-    sf::Time startTime = sf::seconds(37);
+    sf::Time startTime = sf::seconds(40);
     const sf::Time gameLen = sf::seconds(202);
     win.gameClock.reset(true);
     win.gameClock.add(startTime);
@@ -183,8 +182,10 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
     }
     int x2 = 0;
     for (int i = 0; i < 2; i++) {
-        gameObjects.push_back(std::make_unique<slava::Mark>(
-                sf::seconds(47), sf::seconds(49), 150 + x2, 400));
+        gameObjects.push_back(std::make_unique<BasicPicture>(
+                "../bin/Slava/Exclamation_mark.png", sf::Vector2f(150 + x2, 400),
+                sf::seconds(47), sf::seconds(49)
+        ));
         gameObjects.push_back(std::make_unique<slava::Wall>(
                 sf::seconds(48), sf::seconds(53), 400 + x2, -300, sf::Vector2f(0, 10)));
         x2 += 1000;
@@ -198,14 +199,16 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
         x3 = 1300;
     }
     gameObjects.push_back(std::make_unique<BasicText>(
-            "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White, sf::Vector2f(610, 200),
+            "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White,
+            sf::Vector2f(540, 260),
             [ ](Window & win, gameObjectVec & gameObjects) -> std::string {
                 return "I'm tired of you.";
             },
             sf::seconds(50), sf::seconds(52)
     ));
     gameObjects.push_back(std::make_unique<BasicText>(
-            "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White, sf::Vector2f(610, 200),
+            "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White,
+            sf::Vector2f(540, 260),
             [ ](Window & win, gameObjectVec & gameObjects) -> std::string {
                 return "Okay, let's finish this";
             },

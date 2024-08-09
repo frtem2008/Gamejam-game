@@ -8,28 +8,6 @@
 #include "Game object.h"
 
 namespace slava {
-    class Mark : public GameObject {
-    public:
-        Mark(const sf::Time & startTime, const sf::Time & endTime, float posx, float posy) : GameObject(startTime,
-                                                                                                        endTime) {
-            mark.setPosition(posx, posy);
-            exmark.loadFromFile("../bin/Slava/Exclamation_mark.png");
-            mark.setTexture(exmark);
-            mark.setScale(0.5, 0.5);
-        }
-
-        void tick(Window & win, gameObjectVec & gameObjects) override {
-
-        }
-
-        void draw(Window & win) override {
-            win.win.draw(mark);
-        }
-
-        sf::Sprite mark;
-        sf::Texture exmark;
-    };
-
     class Wall : public GameObject {
     public:
         Wall(const sf::Time & startTime, const sf::Time & endTime, float posx, float posy, sf::Vector2f speed)
@@ -47,7 +25,6 @@ namespace slava {
 
         void draw(Window & win) override {
             win.win.draw(sprite);
-
         }
 
         sf::Sprite sprite;

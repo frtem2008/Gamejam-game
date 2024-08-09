@@ -38,4 +38,6 @@ private:
 
 using gameObjectVec = std::vector<std::unique_ptr<GameObject>>;
 
+bool isTimeIn(float t1, float t, float t2);
+
 #endif //GAMEJAMPROG_GAME_OBJECT_H

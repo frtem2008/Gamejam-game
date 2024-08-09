@@ -35,3 +35,7 @@ void GameObject::tryDraw(Window & win) {
         draw(win);
     }
 }
+
+bool isTimeIn(float t1, float t, float t2) {
+    return t1 < t && t <= t2;
+}

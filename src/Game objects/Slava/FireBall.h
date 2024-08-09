@@ -11,8 +11,6 @@
 namespace  slava{
     class FireBall : public GameObject, public RoundObject {
     public:
-        sf::Vector2f speed;
-
         FireBall(const sf::Time & startTime, const sf::Time & endTime,
                  sf::Vector2f speed)
                 : GameObject(startTime, endTime), RoundObject(sprite), speed(speed){
@@ -32,6 +30,7 @@ namespace  slava{
 
         sf::Sprite sprite;
         sf::Texture texture;
+        sf::Vector2f speed;
     };
 }
 #endif //GAMEJAMPROG_FIREBALL_H

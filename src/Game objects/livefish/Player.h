@@ -8,12 +8,12 @@
 #include "Game object.h"
 
 namespace fish {
-    class Player : public GameObject {
+    class Player : public GameObject, public Animated {
     public:
         Player(const std::string & playerTexPath, int fps, int rows, int columns, int frameCount,
                const sf::Time & startTime, const sf::Time & endTime)
                 : GameObject(startTime, endTime),
-                  playerAnim(fps, playerTexPath, rows, columns, frameCount) {
+                  Animated(playerTexPath, fps, rows, columns, frameCount) {
             player.setPosition(100, 135 - 16);
         }
 
@@ -24,7 +24,6 @@ namespace fish {
         float velocityX = 1, accelerationX = 0;
 
         sf::Sprite player;
-        Animation playerAnim;
 
     private:
         void onHide(Window & win) override {
@@ -32,19 +31,12 @@ namespace fish {
         }
 
         void tick(Window & win, gameObjectVec & gameObjects) override {
-            updatePlayerAnim(win);
+            player.setTexture(*getAndNext());
             movePlayer(win);
 
             for (auto & obj : gameObjects) {
-                if (astrCollides(win, obj)) {
-                    win.restartOnNextFrame = true;
-                }
+                onCollide<Asteroid>(win, player, obj, [&win]() { win.restartOnNextFrame = true; });
             }
-        }
-
-        void updatePlayerAnim(Window & win) {
-            playerAnim.update();
-            player.setTexture(*playerAnim.curFrame());
         }
 
         void movePlayer(Window & win) {
@@ -106,12 +98,6 @@ namespace fish {
 
             player.setOrigin(16, 16);
             player.setRotation(velocity * 50);
-        }
-
-        bool astrCollides(Window & win, std::unique_ptr<GameObject> & obj) {
-            bool collided = false;
-            onCollide<Asteroid>(win, player, obj, [&collided]() { collided = true; });
-            return collided;
         }
 
         void draw(Window & win) override {
