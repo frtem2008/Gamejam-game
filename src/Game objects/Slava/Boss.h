@@ -4,6 +4,7 @@
 
 #ifndef GAMEJAMPROG_BOSS_H
 #define GAMEJAMPROG_BOSS_H
+
 #include "Game object.h"
 
 namespace slava {
@@ -14,44 +15,53 @@ namespace slava {
             texSprite.loadFromFile("../bin/Slava/Boss.png");
             texSpriteFlip.loadFromFile("../bin/Slava/Boss_flip.png");
             enemy.setTexture(texSprite);
-            enemy.setScale(10,10);
+            enemy.setScale(10, 10);
 
         }
+
         void tick(Window & win, gameObjectVec & gameObjects) override {
-            if (endTime - win.gameClock.getElapsedTime() < sf::seconds(13) && endTime - win.gameClock.getElapsedTime() >= sf::seconds(12)) {
+            float remainingLifetime = (endTime - win.gameClock.getElapsedTime()).asSeconds();
+            if (12 <= remainingLifetime && remainingLifetime < 13) {
+                std::cout << "1\n";
                 enemy.move(0, -5);
             }
-            if(enemy.getPosition().y < -250){
-                enemy.setPosition(1422,600);
+            if (enemy.getPosition().y < -250) {
+                enemy.setPosition(1422, 600);
             }
-            if (endTime - win.gameClock.getElapsedTime() < sf::seconds(12)&& endTime - win.gameClock.getElapsedTime() >= sf::seconds(10))  {
-                enemy.move(-25,0);
+            if (10 <= remainingLifetime && remainingLifetime < 12) {
+                std::cout << "2\n";
+                enemy.move(-25, 0);
             }
-            if(enemy.getPosition().x < -250){
-                enemy.setPosition(-250,200);
+            if (enemy.getPosition().x < -250) {
+                enemy.setPosition(-250, 200);
             }
-            if (endTime - win.gameClock.getElapsedTime() < sf::seconds(10) && endTime - win.gameClock.getElapsedTime() >= sf::seconds(8.9)) {
+            if (8.9 <= remainingLifetime && remainingLifetime < 10) {
+                std::cout << "3\n";
                 enemy.setTexture(texSpriteFlip);
-                enemy.move(25,0);
+                enemy.move(25, 0);
             }
-
-            if(enemy.getPosition().x > 1423){
-                enemy.setPosition(610,-50);
+            if (enemy.getPosition().x > 1423) {
+                enemy.setPosition(610, -50);
             }
-            if (endTime - win.gameClock.getElapsedTime() < sf::seconds(6) && endTime - win.gameClock.getElapsedTime() >= sf::seconds(0)) {
+            if (0 <= remainingLifetime && remainingLifetime <= 6) {
+                std::cout << "4\n";
                 enemy.move(0, -5);
             }
         }
+
         float distance(sf::Vector2f pos2) {
             sf::Vector2f pos = enemy.getGlobalBounds().getPosition() + enemy.getOrigin() / 2.f;
             return sqrtf((pos.x - pos2.x) * (pos.x - pos2.x) + (pos.y - pos2.y) * (pos.y - pos2.y));
         }
+
         float radius() {
             return enemy.getGlobalBounds().height / 2;
         }
+
         void draw(Window & win) override {
             win.win.draw(enemy);
         }
+
         sf::Sprite enemy;
         sf::Texture texSprite;
         sf::Texture texSpriteFlip;
