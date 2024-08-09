@@ -13,7 +13,7 @@ public:
             : GameObject(sf::Time::Zero, gameLen) {
         music.openFromFile(path);
         music.play();
-        music.setVolume(10);
+        music.setVolume(100);
         music.setPlayingOffset(offset);
     }
 

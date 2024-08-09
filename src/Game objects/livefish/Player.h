@@ -108,7 +108,7 @@ namespace fish {
         void setView(Window & win) {
             auto view = win.win.getDefaultView();
             view.setCenter({200 + 60 * (win.gameClock.getElapsedTime() - startTime).asSeconds(), 135});
-            view.zoom(0.25);
+            view.zoom(0.20);
             win.win.setView(view);
         }
     };

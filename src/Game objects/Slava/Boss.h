@@ -18,7 +18,7 @@ namespace slava {
             sprite.setOrigin(12, 10);
             sprite.setScale(10, 10);
 
-            sprite.setPosition(660, -100);
+            sprite.setPosition(711, -100);
         }
 
         sf::Sprite sprite;
@@ -67,4 +67,5 @@ namespace slava {
         sf::Texture texSprite;
     };
 }
+
 #endif //GAMEJAMPROG_BOSS_H
