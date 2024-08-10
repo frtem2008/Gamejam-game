@@ -36,26 +36,26 @@ namespace slava {
                 sprite.move(0, -5);
             }
             if (corner.y < -250 && sinceStart > 3) {
-                sprite.setPosition(1582, 760);
+                sprite.setPosition(1582, 960);
             }
 
             if (isTimeIn(13, sinceStart, 15)) {
                 sprite.move(-25, 0);
             }
             if (corner.x < -250) {
-                sprite.setPosition(-110, 360);
+                sprite.setPosition(-110, 560);
             }
 
             if (isTimeIn(15, sinceStart, 16.1)) {
                 sprite.setScale(-10, 10);
                 sprite.move(25, 0);
             }
-            if (corner.x > 1423) {
+            if (corner.x > 1423 && !isTimeIn(24, sinceStart, 25)) {
                 sprite.setScale(10, 10);
                 sprite.setPosition(770, 90);
             }
 
-            if (isTimeIn(19, sinceStart, 25)) {
+            if (isTimeIn(24, sinceStart, 25)) {
                 sprite.move(0, -5);
             }
         }

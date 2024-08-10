@@ -13,7 +13,7 @@ namespace slava {
         End(const sf::Time & startTime, const sf::Time & endTime, float x, sf::Vector2f speed)
                 : GameObject(startTime, endTime), RoundObject(sprite), x(x), speed(speed) {
             sprite.setPosition(x, 0);
-            sprite.setScale(7, 13);
+            sprite.setScale(8, 13);
             texture.loadFromFile("../bin/livefish/first/asteroids/big.png");
             sprite.setTexture(texture);
         }
