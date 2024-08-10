@@ -109,7 +109,7 @@ void deferredDelete(gameObjectVec & gameObjects,
 
 
 void startGame(Window & win, gameObjectVec & gameObjects) {
-    sf::Time startTime = sf::seconds(40);
+    sf::Time startTime = sf::seconds(0);
     const sf::Time gameLen = sf::seconds(202);
     win.gameClock.reset(true);
     win.gameClock.add(startTime);
@@ -224,22 +224,58 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
     }
     gameObjects.push_back(std::make_unique<BasicText>(
             "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White,
-            sf::Vector2f(711, 350),
-            [ ](Window & win, gameObjectVec & gameObjects) -> std::string {
-                return "I'm tired of you.";
-            },
+            sf::Vector2f(711, 350), "I'm tired of you.",
             sf::seconds(50), sf::seconds(52)
     ));
     gameObjects.push_back(std::make_unique<BasicText>(
             "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White,
-            sf::Vector2f(711, 350),
-            [ ](Window & win, gameObjectVec & gameObjects) -> std::string {
-                return "Okay, let's finish this";
-            },
+            sf::Vector2f(711, 350), "Okay, let's finish this",
             sf::seconds(59), sf::seconds(62)
     ));
     gameObjects.push_back(std::make_unique<slava::Boss>(
             sf::seconds(40), sf::seconds(65)));
+
+    // Livefish intermission
+    gameObjects.push_back(std::make_unique<FlashingText>(
+            "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White,
+            sf::Vector2f(711, 350), "Livefish intermission gotta be here",
+            sf::seconds(65), sf::seconds(4), sf::seconds(3), sf::seconds(4)
+    ));
+    gameObjects.push_back(std::make_unique<FlashingText>(
+            "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White,
+            sf::Vector2f(711, 350), "Some lore and rules explanation gotta be here",
+            sf::seconds(76), sf::seconds(4), sf::seconds(3), sf::seconds(4)
+    ));
+    gameObjects.push_back(std::make_unique<FlashingText>(
+            "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White,
+            sf::Vector2f(711, 350), "Armor animation here",
+            sf::seconds(87), sf::seconds(3), sf::seconds(4), sf::seconds(3)
+    ));
+    gameObjects.push_back(std::make_unique<FlashingText>(
+            "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White,
+            sf::Vector2f(711, 350), "Black screen fade",
+            sf::seconds(97), sf::seconds(2), sf::seconds(2), sf::seconds(2)
+    ));
+    gameObjects.push_back(std::make_unique<FlashingText>(
+            "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White,
+            sf::Vector2f(711, 350), "3",
+            sf::seconds(104), sf::seconds(0.25), sf::seconds(0.5), sf::seconds(0.25)
+    ));
+    gameObjects.push_back(std::make_unique<FlashingText>(
+            "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White,
+            sf::Vector2f(711, 350), "2",
+            sf::seconds(105), sf::seconds(0.25), sf::seconds(0.5), sf::seconds(0.25)
+    ));
+    gameObjects.push_back(std::make_unique<FlashingText>(
+            "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White,
+            sf::Vector2f(711, 350), "1",
+            sf::seconds(106), sf::seconds(0.25), sf::seconds(0.5), sf::seconds(0.25)
+    ));
+    gameObjects.push_back(std::make_unique<FlashingText>(
+            "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White,
+            sf::Vector2f(711, 350), "AFTERLIFE",
+            sf::seconds(107), sf::seconds(0.5), sf::seconds(1.25), sf::seconds(0.25)
+    ));
 
     // Timer
     gameObjects.push_back(std::make_unique<BasicText>(

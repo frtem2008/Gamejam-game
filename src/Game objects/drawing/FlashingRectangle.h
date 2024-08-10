@@ -6,13 +6,14 @@
 #define GAMEJAMPROG_FLASHINGRECTANGLE_H
 
 #include "Game object.h"
+#include "common/Flashing.h"
 
-class FlashingRectangle : public GameObject {
+class FlashingRectangle : public GameObject, public Flashing {
 public:
     FlashingRectangle(sf::Vector2f pos, sf::Vector2f size, sf::Color col,
                       sf::Time startTime, sf::Time fadeIn, sf::Time fullBright, sf::Time fadeOut
     ) : GameObject(startTime, startTime + fadeIn + fullBright + fadeOut),
-        fadeIn(fadeIn), fullBright(fullBright), fadeOut(fadeOut) {
+        Flashing(&shape, startTime, fadeIn, fullBright, fadeOut) {
         shape.setPosition(pos);
         shape.setSize(size);
         shape.setFillColor(col);
@@ -21,7 +22,7 @@ public:
     FlashingRectangle(sf::Vector2f pos, const std::string & texPath,
                       sf::Time startTime, sf::Time fadeIn, sf::Time fullBright, sf::Time fadeOut
     ) : GameObject(startTime, startTime + fadeIn + fullBright + fadeOut),
-        fadeIn(fadeIn), fullBright(fullBright), fadeOut(fadeOut), isSprite(true) {
+        Flashing(&sprite, startTime, fadeIn, fullBright, fadeOut), isSprite(true) {
         sprite.setPosition(pos);
         tex.loadFromFile(texPath);
         sprite.setTexture(tex);
@@ -31,43 +32,10 @@ private:
     sf::Sprite sprite;
     sf::RectangleShape shape;
     sf::Texture tex;
-    sf::Time fadeIn, fullBright, fadeOut;
     bool isSprite = false;
 
     void tick(Window & win, gameObjectVec & gameObjects) override {
-        sf::Color color;
-        if (isSprite) {
-            color = sf::Color::White;
-        } else {
-            color = shape.getFillColor();
-        }
-
-        sf::Time time = win.gameClock.getElapsedTime();
-        sf::Time timeSinceStart = time - startTime;
-        sf::Time timeToEnd = endTime - time;
-
-        color.a = 255;
-        float k = 0;
-        std::string pass = "";
-        if (timeSinceStart <= fadeIn) {
-            pass = "in";
-            k = timeSinceStart / fadeIn;
-        } else if (fadeIn < timeSinceStart && timeSinceStart <= fadeIn + fullBright) {
-            pass = "full";
-            k = 1;
-        } else if (fadeIn + fullBright < timeSinceStart && timeSinceStart <= fadeIn + fullBright + fadeOut) {
-            pass = "out";
-            k = timeToEnd / fadeOut;
-        }
-
-        color.a = 255 * k;
-        // std::cout << pass << ", color.a: " << static_cast<int>(color.a) << " k: " << k << "\n";
-
-        if (isSprite) {
-            sprite.setColor(color);
-        } else {
-            shape.setFillColor(color);
-        }
+        updateColor(win);
     }
 
     void draw(Window & win) override {

@@ -33,6 +33,7 @@
 
 #include "common/RoundObject.h"
 #include "common/Animated.h"
+#include "common/Flashing.h"
 
 inline std::mt19937 random_data(std::chrono::steady_clock::now().time_since_epoch().count());
 
