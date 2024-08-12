@@ -46,11 +46,11 @@ namespace slava {
                 sprite.setPosition(-110, 560);
             }
 
-            if (isTimeIn(15, sinceStart, 16.1)) {
+            if (isTimeIn(15, sinceStart, 16.15)) {
                 sprite.setScale(-10, 10);
                 sprite.move(25, 0);
             }
-            if (corner.x > 1423 && !isTimeIn(24, sinceStart, 25)) {
+            if (corner.x > 1423) {
                 sprite.setScale(10, 10);
                 sprite.setPosition(770, 90);
             }

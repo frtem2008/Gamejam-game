@@ -14,7 +14,7 @@
 namespace slava {
     class Player : public GameObject {
     public:
-        Player(const sf::Time & startTime, const sf::Time & endTime) : GameObject(startTime, endTime) {
+        Player(const sf::Time & startTime, const sf::Time & endTime) : GameObject(startTime, endTime){
             right.loadFromFile("../bin/Slava/Player.png");
             sprite.setPosition(50, 400);
             sprite.setOrigin(16, 16);
@@ -45,6 +45,7 @@ namespace slava {
                 onCollide<Wall>(win, sprite, obj, [&win]() { win.restartOnNextFrame = true; });
                 onCollide<Boss>(win, sprite, obj, [&win]() { win.restartOnNextFrame = true; });
             }
+
         }
 
         void draw(Window & win) override {
@@ -55,7 +56,7 @@ namespace slava {
 
         static void setView(Window & win) {
             auto view = win.win.getDefaultView();
-            view.setSize(1422, 800);
+            view.setSize(1422,800);
             view.setCenter(1422 / 2, 800 / 2);
             win.win.setView(view);
         }

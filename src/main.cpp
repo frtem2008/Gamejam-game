@@ -109,7 +109,7 @@ void deferredDelete(gameObjectVec & gameObjects,
 
 
 void startGame(Window & win, gameObjectVec & gameObjects) {
-    sf::Time startTime = sf::seconds(0);
+    sf::Time startTime = sf::seconds(40);
     const sf::Time gameLen = sf::seconds(202);
     win.gameClock.reset(true);
     win.gameClock.add(startTime);
@@ -162,6 +162,7 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
     }
 
     //Slava Part
+
     gameObjects.push_back(std::make_unique<BasicPicture>(
             "../bin/Slava/Bg_Slava.png", sf::Vector2f(-20, 0),
             sf::seconds(40), sf::seconds(65)
@@ -234,6 +235,11 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
     ));
     gameObjects.push_back(std::make_unique<slava::Boss>(
             sf::seconds(40), sf::seconds(65)));
+    gameObjects.push_back(std::make_unique<BasicText>(
+            "../bin/font.ttf", sf::Text::Style::Underlined, sf::Color::White,
+            sf::Vector2f(200, 0), "WASD!",
+            sf::seconds(40), sf::seconds(43)
+    ));
 
     // Livefish intermission
     gameObjects.push_back(std::make_unique<FlashingText>(
