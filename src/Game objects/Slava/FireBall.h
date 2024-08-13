@@ -17,11 +17,18 @@ namespace  slava{
 
             sprite.setPosition(630, 50);
             texture.loadFromFile("../bin/Slava/Boll.png");
+            boom.loadFromFile("../bin/Slava/Boom.png");
             sprite.setTexture(texture);
         }
 
         void tick(Window & win, gameObjectVec & gameObjects) override {
-            sprite.move(speed);
+            if(sprite.getPosition().y >= 550){
+                sprite.setScale(2,2);
+                sprite.setTexture(boom);
+            }else{
+                sprite.move(speed);
+            };
+
         }
 
         void draw(Window & win) override {
@@ -31,6 +38,7 @@ namespace  slava{
         sf::Sprite sprite;
         sf::Texture texture;
         sf::Vector2f speed;
+        sf::Texture boom;
     };
 }
 #endif //GAMEJAMPROG_FIREBALL_H

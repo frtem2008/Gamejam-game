@@ -10,7 +10,7 @@
 #include "Wall.h"
 #include "Boss.h"
 #include "End.h"
-
+#include "MiniFireBall.h"
 namespace slava {
     class Player : public GameObject {
     public:
@@ -44,6 +44,7 @@ namespace slava {
                 onCollide<FireBall>(win, sprite, obj, [&win]() { win.restartOnNextFrame = true; });
                 onCollide<Wall>(win, sprite, obj, [&win]() { win.restartOnNextFrame = true; });
                 onCollide<Boss>(win, sprite, obj, [&win]() { win.restartOnNextFrame = true; });
+                onCollide<MiniFireBall>(win, sprite, obj, [&win]() { win.restartOnNextFrame = true; });
             }
 
         }

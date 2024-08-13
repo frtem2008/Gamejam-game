@@ -25,7 +25,8 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "src/*.cpp")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/out)
 add_executable(${PROJECT_NAME} ${SOURCES}
-        "src/Game objects/Slava/End.h")
+        "src/Game objects/Slava/End.h"
+        "src/Game objects/Slava/MiniFireBall.h")
 
 target_link_libraries(${PROJECT_NAME}
         PRIVATE sfml-graphics

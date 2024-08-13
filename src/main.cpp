@@ -178,9 +178,28 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
     }
     for (int i = -4; i <= 4; i++) {
         gameObjects.push_back(std::make_unique<slava::FireBall>(
-                sf::seconds(45), sf::seconds(50),
+                sf::seconds(45), sf::seconds(48),
                 sf::Vector2f(i, 4)));
     }
+    int speed[8][2] = {
+            {2,2},
+            {0,2},
+            {-2,2},
+            {-2,0},
+            {-2,-2},
+            {0,-2},
+            {2,-2},
+            {2,0}};
+    int x5 =0;
+    for (int i =-4;i<=4;i++){
+        for(int j = 0; j <= 7;j++){
+            gameObjects.push_back(std::make_unique<slava::MiniFireBall>(
+                    sf::seconds(47), sf::seconds(50),170+x5,speed[j][0],speed[j][1]
+            ));
+        }
+        x5 += 240;
+    }
+
 
 
     for (int i = 0; i <= 4; i++) {
@@ -194,16 +213,19 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
                 sf::seconds(40), sf::seconds(48), 1422, 0 + y, sf::Vector2f(-9, 0)));
         y += 500;
     }
-    int x = 0;
-    for (int i = 0; i < 2; i++) {
-        gameObjects.push_back(std::make_unique<slava::Wall>(
-                sf::seconds(48), sf::seconds(53), 400 + x, -300, sf::Vector2f(0, 10)));
-        x += 1000;
-    }
     for (int i = -4; i <= 4; i++) {
         gameObjects.push_back(std::make_unique<slava::FireBall>(
-                sf::seconds(48), sf::seconds(53),
+                sf::seconds(48), sf::seconds(51),
                 sf::Vector2f(i, 4)));
+    }
+    x5 = 0;
+    for (int i =-4;i<=4;i++){
+        for(int j = 0; j <= 7;j++){
+            gameObjects.push_back(std::make_unique<slava::MiniFireBall>(
+                    sf::seconds(50), sf::seconds(53),170+x5,speed[j][0],speed[j][1]
+            ));
+        }
+        x5 += 240;
     }
     int x2 = 0;
     for (int i = 0; i < 2; i++) {
