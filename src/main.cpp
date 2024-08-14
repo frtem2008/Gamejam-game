@@ -109,7 +109,7 @@ void deferredDelete(gameObjectVec & gameObjects,
 
 
 void startGame(Window & win, gameObjectVec & gameObjects) {
-    sf::Time startTime = sf::seconds(40);
+    sf::Time startTime = sf::seconds(0);
     const sf::Time gameLen = sf::seconds(202);
     win.gameClock.reset(true);
     win.gameClock.add(startTime);
@@ -125,6 +125,8 @@ void startGame(Window & win, gameObjectVec & gameObjects) {
             sf::seconds(0), sf::seconds(6)
     ));
 
+
+    // gjapjogs
     gameObjects.push_back(std::make_unique<BasicPicture>(
             "../bin/lerkk/2.png", sf::Vector2f(0, 0),
             sf::seconds(6), sf::seconds(10.3)
